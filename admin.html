@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es-PE">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Administración · Lengua de Señas Peruana · UPSJB</title>
+  <script>
+    // Si un script no carga, muestra un aviso en pantalla en lugar de dejar la página en blanco.
+    (function () {
+      function m(t) {
+        var d = document.getElementById('errorCarga');
+        if (!d) { d = document.createElement('div'); d.id = 'errorCarga'; d.setAttribute('role', 'alert');
+          d.style.cssText = 'position:fixed;left:0;right:0;bottom:0;z-index:99;background:#5c0119;color:#fff;padding:.75rem 1rem;font:15px system-ui,sans-serif';
+          (document.body || document.documentElement).appendChild(d); }
+        d.textContent = t;
+      }
+      window.addEventListener('error', function (e) {
+        var el = e.target;
+        if (el && el.tagName === 'SCRIPT') m('No se pudo cargar ' + (el.src || 'un script') + '. Revisa que el servidor local esté abierto en la carpeta correcta y que tengas internet.');
+        else if (!el || el === window) m('Error: ' + (e.message || 'desconocido'));
+      }, true);
+      window.addEventListener('unhandledrejection', function (e) { m('Error: ' + ((e.reason && e.reason.message) || e.reason)); });
+    })();
+  </script>
+  <link rel="icon" href="assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js" defer></script>
+  <script type="module" src="js/admin.js"></script>
+</head>
+<body data-rol="admin" data-vista="datos">
+
+<!-- ============ Acceso de administrador ============ -->
+<div class="gate" id="gate">
+  <form class="gate-card" id="gateForm" autocomplete="off">
+    <img src="assets/logo-upsjb.png" alt="Universidad Privada San Juan Bautista" width="88" height="88">
+    <h1 id="gateTitulo">Acceso de administrador</h1>
+    <p class="ayuda" id="gateAyuda"></p>
+    <label>Contraseña <input type="password" id="gateClave" required autocomplete="current-password"></label>
+    <label id="gateRepetir" hidden>Repite la contraseña <input type="password" id="gateClave2" autocomplete="new-password"></label>
+    <button class="btn grande" id="gateBtn" type="submit">Ingresar</button>
+    <p class="msg" id="gateMsg" role="status"></p>
+    <a class="btn-texto" href="index.html">Volver al módulo de usuario</a>
+  </form>
+</div>
+
+<div id="panelAdmin" hidden>
+<header class="cabecera">
+  <div class="cabecera-in">
+    <img class="logo" src="assets/logo-upsjb-rojo.png" alt="Universidad Privada San Juan Bautista">
+    <div class="titulo">
+      <h1>Administración</h1>
+      <p>Datos y entrenamiento de Lengua de Señas Peruana</p>
+    </div>
+    <nav class="tabs" aria-label="Secciones">
+      <button class="tab" data-vista="datos" aria-current="page">Datos</button>
+      <button class="tab" data-vista="entrenar">Entrenamiento</button>
+      <a class="tab" href="index.html">Módulo de usuario</a>
+      <button class="tab" id="btnSalir" type="button">Salir</button>
+    </nav>
+  </div>
+</header>
+
+<main class="workspace">
+  <section class="stage-col" aria-label="Cámara">
+    <div class="escudo">
+      <div class="escudo-in">
+        <video id="video" playsinline muted></video>
+        <canvas id="overlay"></canvas>
+        <div class="stage-vacio" id="stageVacio">
+          <img src="assets/logo-upsjb.png" alt="" width="84" height="84">
+          <p>Activa la cámara y colócate de modo que se vean tus hombros y tus manos.</p>
+        </div>
+        <div class="cuenta" id="cuenta" aria-live="assertive"></div>
+        <div class="stage-chips" id="chips" hidden>
+          <span class="chip" id="chipManos">Manos: 0</span>
+          <span class="chip" id="chipFps">0 fps</span>
+        </div>
+      </div>
+    </div>
+    <div class="stage-controles">
+      <button class="btn grande" id="btnCamara">Activar cámara</button>
+      <span class="estado" id="estadoCamara" role="status">Cámara apagada</span>
+    </div>
+  </section>
+
+  <!-- ============ Panel: Datos ============ -->
+  <section class="panel-col vista" data-for="datos" aria-label="Recolección de datos">
+    <div class="tarjeta">
+      <h2>Grabar muestras</h2>
+      <p class="ayuda">Pide a una persona señante que haga la seña. Cada muestra dura 2 segundos. Se guardan en este navegador.</p>
+      <div class="form">
+        <label>Señante
+          <input id="signer" type="text" value="S01" maxlength="12" autocomplete="off">
+        </label>
+        <label>Seña
+          <select id="selSena"></select>
+        </label>
+        <label>Repeticiones
+          <input id="reps" type="number" min="1" max="30" value="10">
+        </label>
+      </div>
+      <label class="check"><input type="checkbox" id="soloPiloto" checked> Mostrar solo las 12 señas del piloto (recomendado para empezar)</label>
+      <div class="acciones">
+        <button class="btn" id="btnGrabar" disabled>Grabar</button>
+        <button class="btn btn-sec" id="btnCancelar" hidden>Cancelar</button>
+      </div>
+      <p class="msg" id="recMsg" role="status">Activa la cámara para grabar.</p>
+    </div>
+
+    <div class="tarjeta">
+      <div class="fila-titulo"><h2>Avance del dataset</h2><span class="total" id="totalMuestras">0 muestras</span></div>
+      <ul class="avance" id="avance"></ul>
+      <div class="acciones sep">
+        <button class="btn btn-sec" id="btnDeshacer">Deshacer última</button>
+        <button class="btn btn-sec" id="btnExportar">Exportar muestras nuevas</button>
+        <button class="btn btn-sec" id="btnExportarTodo">Exportar todo (respaldo)</button>
+        <label class="btn btn-sec" tabindex="0">Importar dataset<input type="file" id="fileImportar" accept=".json,.gz" hidden></label>
+        <button class="btn-texto peligro" id="btnBorrar">Borrar todo</button>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============ Panel: Entrenamiento (ancho completo) ============ -->
+  <section class="entrenar vista" data-for="entrenar" aria-label="Entrenamiento">
+    <div class="tarjeta">
+      <h2>Entrenar el modelo</h2>
+      <p class="ayuda">El modelo aprende de las muestras grabadas. Todo ocurre en tu navegador; no se sube nada.</p>
+      <p class="resumen-ds" id="resumenDs">Cargando…</p>
+      <div class="form">
+        <label>Tipo de modelo
+          <select id="optArch"><option value="conv">Rápido (Conv1D)</option><option value="gru">Secuencial (GRU, más lento)</option></select>
+        </label>
+        <label>Épocas <input id="optEpocas" type="number" min="5" max="300" value="40"></label>
+        <label>Aumento de datos
+          <select id="optAug"><option value="1">Ninguno</option><option value="2" selected>×2</option><option value="3">×3</option></select>
+        </label>
+        <label>Mínimo de muestras por seña <input id="optMin" type="number" min="3" max="100" value="6"></label>
+      </div>
+      <label class="check"><input type="checkbox" id="optRepo" checked> Incluir datasets de la carpeta <code>data/dataset</code> del repositorio</label>
+      <div class="acciones">
+        <button class="btn" id="btnEntrenar">Entrenar</button>
+        <button class="btn btn-sec" id="btnParar" hidden>Detener</button>
+      </div>
+      <div class="barra grande" id="trainWrap" hidden><i id="trainBar"></i></div>
+      <p class="msg" id="trainMsg" role="status"></p>
+      <pre class="log" id="trainLog" hidden></pre>
+    </div>
+
+    <div class="tarjeta" id="resultados" hidden>
+      <h2>Resultado</h2>
+      <p id="resGlobal"></p>
+      <table class="tabla"><thead><tr><th>Seña</th><th>Muestras de validación</th><th>Acierto</th></tr></thead><tbody id="resTabla"></tbody></table>
+      <div class="acciones sep">
+        <button class="btn" id="btnDescargar">Descargar modelo para el repositorio</button>
+      </div>
+      <p class="ayuda">Copia los archivos descargados (<code>modelo-lsp.json</code>, <code>modelo-lsp.weights.bin</code> y <code>etiquetas.json</code>) a la carpeta <code>model/</code> y sube los cambios a GitHub.</p>
+    </div>
+  </section>
+
+
+</main>
+
+<footer class="pie">
+  <span>Universidad Privada San Juan Bautista · Panel de administración</span>
+  <span id="pieModelo">Modelo: sin cargar</span>
+</footer>
+</div>
+</body>
+</html>

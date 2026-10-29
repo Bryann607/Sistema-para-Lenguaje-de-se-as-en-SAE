@@ -1,0 +1,234 @@
+{
+  "_ayuda": "Lista de señas a reconocer. 'piloto': true marca las 12 señas con las que conviene empezar. Para agregar una: añade un objeto con id (sin tildes ni espacios), nombre y categoria; luego graba muestras en admin.html y vuelve a entrenar.",
+  "categorias": [
+    {
+      "id": "cortesia",
+      "nombre": "Cortesía y básicas"
+    },
+    {
+      "id": "preguntas",
+      "nombre": "Preguntas"
+    },
+    {
+      "id": "tramites",
+      "nombre": "Trámites"
+    },
+    {
+      "id": "academico",
+      "nombre": "Vida académica"
+    },
+    {
+      "id": "lugares",
+      "nombre": "Lugares y contacto"
+    }
+  ],
+  "senas": [
+    {
+      "id": "hola",
+      "nombre": "Hola",
+      "categoria": "cortesia",
+      "piloto": true
+    },
+    {
+      "id": "gracias",
+      "nombre": "Gracias",
+      "categoria": "cortesia",
+      "piloto": true
+    },
+    {
+      "id": "por_favor",
+      "nombre": "Por favor",
+      "categoria": "cortesia"
+    },
+    {
+      "id": "adios",
+      "nombre": "Adiós",
+      "categoria": "cortesia",
+      "piloto": true
+    },
+    {
+      "id": "si",
+      "nombre": "Sí",
+      "categoria": "cortesia",
+      "piloto": true
+    },
+    {
+      "id": "no",
+      "nombre": "No",
+      "categoria": "cortesia",
+      "piloto": true
+    },
+    {
+      "id": "ayuda",
+      "nombre": "Ayuda",
+      "categoria": "cortesia",
+      "piloto": true
+    },
+    {
+      "id": "que",
+      "nombre": "Qué",
+      "categoria": "preguntas"
+    },
+    {
+      "id": "donde",
+      "nombre": "Dónde",
+      "categoria": "preguntas"
+    },
+    {
+      "id": "cuando",
+      "nombre": "Cuándo",
+      "categoria": "preguntas"
+    },
+    {
+      "id": "cuanto",
+      "nombre": "Cuánto",
+      "categoria": "preguntas"
+    },
+    {
+      "id": "como",
+      "nombre": "Cómo",
+      "categoria": "preguntas"
+    },
+    {
+      "id": "quien",
+      "nombre": "Quién",
+      "categoria": "preguntas"
+    },
+    {
+      "id": "matricula",
+      "nombre": "Matrícula",
+      "categoria": "tramites",
+      "piloto": true
+    },
+    {
+      "id": "pension",
+      "nombre": "Pensión",
+      "categoria": "tramites",
+      "piloto": true
+    },
+    {
+      "id": "pago",
+      "nombre": "Pago",
+      "categoria": "tramites"
+    },
+    {
+      "id": "constancia",
+      "nombre": "Constancia",
+      "categoria": "tramites",
+      "piloto": true
+    },
+    {
+      "id": "certificado",
+      "nombre": "Certificado",
+      "categoria": "tramites",
+      "piloto": true
+    },
+    {
+      "id": "carne",
+      "nombre": "Carné",
+      "categoria": "tramites"
+    },
+    {
+      "id": "beca",
+      "nombre": "Beca",
+      "categoria": "tramites"
+    },
+    {
+      "id": "traslado",
+      "nombre": "Traslado",
+      "categoria": "tramites"
+    },
+    {
+      "id": "retiro",
+      "nombre": "Retiro",
+      "categoria": "tramites"
+    },
+    {
+      "id": "documentos",
+      "nombre": "Documentos",
+      "categoria": "tramites"
+    },
+    {
+      "id": "requisitos",
+      "nombre": "Requisitos",
+      "categoria": "tramites",
+      "piloto": true
+    },
+    {
+      "id": "admision",
+      "nombre": "Admisión",
+      "categoria": "tramites"
+    },
+    {
+      "id": "carrera",
+      "nombre": "Carrera",
+      "categoria": "academico"
+    },
+    {
+      "id": "ciclo",
+      "nombre": "Ciclo",
+      "categoria": "academico"
+    },
+    {
+      "id": "curso",
+      "nombre": "Curso",
+      "categoria": "academico"
+    },
+    {
+      "id": "examen",
+      "nombre": "Examen",
+      "categoria": "academico"
+    },
+    {
+      "id": "notas",
+      "nombre": "Notas",
+      "categoria": "academico"
+    },
+    {
+      "id": "horario",
+      "nombre": "Horario",
+      "categoria": "academico",
+      "piloto": true
+    },
+    {
+      "id": "cronograma",
+      "nombre": "Cronograma",
+      "categoria": "academico"
+    },
+    {
+      "id": "sae",
+      "nombre": "SAE",
+      "categoria": "lugares"
+    },
+    {
+      "id": "caja",
+      "nombre": "Caja",
+      "categoria": "lugares"
+    },
+    {
+      "id": "biblioteca",
+      "nombre": "Biblioteca",
+      "categoria": "lugares"
+    },
+    {
+      "id": "psicologia",
+      "nombre": "Psicología",
+      "categoria": "lugares"
+    },
+    {
+      "id": "secretaria",
+      "nombre": "Secretaría",
+      "categoria": "lugares"
+    },
+    {
+      "id": "telefono",
+      "nombre": "Teléfono",
+      "categoria": "lugares"
+    },
+    {
+      "id": "correo",
+      "nombre": "Correo",
+      "categoria": "lugares"
+    }
+  ]
+}

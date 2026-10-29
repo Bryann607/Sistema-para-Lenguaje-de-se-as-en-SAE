@@ -1,0 +1,392 @@
+{
+  "_ayuda": "Contenido de EJEMPLO. Cada clave es el id de una seña en vocabulario.json. Reemplaza los textos con información oficial y cambia verificado a true para quitar el aviso de 'pendiente de validar'.",
+  "matricula": {
+    "titulo": "Matrícula",
+    "resumen": "Proceso para inscribirte en los cursos de tu ciclo.",
+    "verificado": false,
+    "pasos": [
+      "Revisa que no tengas deudas pendientes.",
+      "Elige tus cursos en el sistema académico.",
+      "Confirma tu matrícula con tu pago al día."
+    ],
+    "lugar": "SAE · Completar con datos oficiales del SAE",
+    "horario": "Completar con datos oficiales del SAE",
+    "contacto": "Completar con datos oficiales del SAE"
+  },
+  "pension": {
+    "titulo": "Pensión",
+    "resumen": "Pago mensual de estudios.",
+    "verificado": false,
+    "pasos": [
+      "Consulta el monto y la fecha de vencimiento.",
+      "Paga en caja o por los canales autorizados.",
+      "Guarda tu comprobante."
+    ],
+    "lugar": "SAE · Completar con datos oficiales del SAE",
+    "horario": "Completar con datos oficiales del SAE",
+    "contacto": "Completar con datos oficiales del SAE"
+  },
+  "pago": {
+    "titulo": "Pagos",
+    "resumen": "Dónde y cómo realizar pagos a la universidad.",
+    "verificado": false,
+    "pasos": [
+      "Consulta el concepto de pago.",
+      "Paga en los canales autorizados.",
+      "Guarda tu comprobante."
+    ],
+    "lugar": "SAE · Completar con datos oficiales del SAE",
+    "horario": "Completar con datos oficiales del SAE",
+    "contacto": "Completar con datos oficiales del SAE"
+  },
+  "constancia": {
+    "titulo": "Constancias",
+    "resumen": "Documentos que acreditan tu condición de estudiante.",
+    "verificado": false,
+    "pasos": [
+      "Indica qué constancia necesitas.",
+      "Presenta tu DNI y código de estudiante.",
+      "Consulta el plazo de entrega."
+    ],
+    "lugar": "SAE · Completar con datos oficiales del SAE",
+    "horario": "Completar con datos oficiales del SAE",
+    "contacto": "Completar con datos oficiales del SAE"
+  },
+  "certificado": {
+    "titulo": "Certificados",
+    "resumen": "Certificados de estudios y notas.",
+    "verificado": false,
+    "pasos": [
+      "Indica el tipo de certificado.",
+      "Presenta tu DNI y código de estudiante.",
+      "Consulta el costo y plazo de entrega."
+    ],
+    "lugar": "SAE · Completar con datos oficiales del SAE",
+    "horario": "Completar con datos oficiales del SAE",
+    "contacto": "Completar con datos oficiales del SAE"
+  },
+  "carne": {
+    "titulo": "Carné universitario",
+    "resumen": "Identificación como estudiante de la universidad.",
+    "verificado": false,
+    "pasos": [
+      "Presenta tu DNI.",
+      "Consulta si necesitas foto o pago previo.",
+      "Recoge tu carné según el plazo indicado."
+    ],
+    "lugar": "SAE · Completar con datos oficiales del SAE",
+    "horario": "Completar con datos oficiales del SAE",
+    "contacto": "Completar con datos oficiales del SAE"
+  },
+  "beca": {
+    "titulo": "Becas y descuentos",
+    "resumen": "Información sobre ayudas económicas disponibles.",
+    "verificado": false,
+    "pasos": [
+      "Consulta los tipos de beca vigentes.",
+      "Reúne los documentos solicitados.",
+      "Entrega tu solicitud dentro del plazo."
+    ],
+    "lugar": "SAE · Completar con datos oficiales del SAE",
+    "horario": "Completar con datos oficiales del SAE",
+    "contacto": "Completar con datos oficiales del SAE"
+  },
+  "traslado": {
+    "titulo": "Traslados",
+    "resumen": "Cambio de sede, turno o carrera.",
+    "verificado": false,
+    "pasos": [
+      "Indica qué tipo de traslado necesitas.",
+      "Reúne los documentos solicitados.",
+      "Presenta tu solicitud en el SAE."
+    ],
+    "lugar": "SAE · Completar con datos oficiales del SAE",
+    "horario": "Completar con datos oficiales del SAE",
+    "contacto": "Completar con datos oficiales del SAE"
+  },
+  "retiro": {
+    "titulo": "Retiro de cursos o ciclo",
+    "resumen": "Solicitud para retirarte de uno o más cursos o del ciclo.",
+    "verificado": false,
+    "pasos": [
+      "Consulta las fechas permitidas.",
+      "Presenta tu solicitud.",
+      "Verifica tu situación académica y de pagos."
+    ],
+    "lugar": "SAE · Completar con datos oficiales del SAE",
+    "horario": "Completar con datos oficiales del SAE",
+    "contacto": "Completar con datos oficiales del SAE"
+  },
+  "documentos": {
+    "titulo": "Documentos",
+    "resumen": "Documentos que se piden para trámites frecuentes.",
+    "verificado": false,
+    "pasos": [
+      "Indica qué trámite vas a realizar.",
+      "Verifica la lista de documentos.",
+      "Presenta copias y originales si se solicita."
+    ],
+    "lugar": "SAE · Completar con datos oficiales del SAE",
+    "horario": "Completar con datos oficiales del SAE",
+    "contacto": "Completar con datos oficiales del SAE"
+  },
+  "requisitos": {
+    "titulo": "Requisitos",
+    "resumen": "Requisitos para realizar un trámite.",
+    "verificado": false,
+    "pasos": [
+      "Indica qué trámite necesitas.",
+      "Consulta la lista de requisitos.",
+      "Reúne todo antes de presentarlo."
+    ],
+    "lugar": "SAE · Completar con datos oficiales del SAE",
+    "horario": "Completar con datos oficiales del SAE",
+    "contacto": "Completar con datos oficiales del SAE"
+  },
+  "admision": {
+    "titulo": "Admisión",
+    "resumen": "Información para postular a la universidad.",
+    "verificado": false,
+    "pasos": [
+      "Elige la carrera.",
+      "Consulta fechas y requisitos de postulación.",
+      "Presenta tu inscripción."
+    ],
+    "lugar": "SAE · Completar con datos oficiales del SAE",
+    "horario": "Completar con datos oficiales del SAE",
+    "contacto": "Completar con datos oficiales del SAE"
+  },
+  "carrera": {
+    "titulo": "Carreras",
+    "resumen": "Carreras profesionales que ofrece la universidad.",
+    "verificado": false,
+    "pasos": [
+      "Consulta la lista de carreras.",
+      "Revisa el plan de estudios.",
+      "Pide orientación si tienes dudas."
+    ],
+    "lugar": "SAE · Completar con datos oficiales del SAE",
+    "horario": "Completar con datos oficiales del SAE",
+    "contacto": "Completar con datos oficiales del SAE"
+  },
+  "ciclo": {
+    "titulo": "Ciclos académicos",
+    "resumen": "Información sobre el ciclo en curso y los siguientes.",
+    "verificado": false,
+    "pasos": [
+      "Consulta las fechas de inicio y fin.",
+      "Revisa el calendario académico."
+    ],
+    "lugar": "SAE · Completar con datos oficiales del SAE",
+    "horario": "Completar con datos oficiales del SAE",
+    "contacto": "Completar con datos oficiales del SAE"
+  },
+  "curso": {
+    "titulo": "Cursos",
+    "resumen": "Consulta de cursos y secciones.",
+    "verificado": false,
+    "pasos": [
+      "Revisa tu plan de estudios.",
+      "Consulta secciones y vacantes."
+    ],
+    "lugar": "SAE · Completar con datos oficiales del SAE",
+    "horario": "Completar con datos oficiales del SAE",
+    "contacto": "Completar con datos oficiales del SAE"
+  },
+  "examen": {
+    "titulo": "Exámenes",
+    "resumen": "Fechas y reglas de evaluaciones.",
+    "verificado": false,
+    "pasos": [
+      "Consulta el cronograma de exámenes.",
+      "Lleva tu carné o DNI el día del examen."
+    ],
+    "lugar": "SAE · Completar con datos oficiales del SAE",
+    "horario": "Completar con datos oficiales del SAE",
+    "contacto": "Completar con datos oficiales del SAE"
+  },
+  "notas": {
+    "titulo": "Notas",
+    "resumen": "Consulta de calificaciones.",
+    "verificado": false,
+    "pasos": [
+      "Ingresa al sistema académico con tu usuario.",
+      "Si tienes un reclamo, indica el curso y el docente."
+    ],
+    "lugar": "SAE · Completar con datos oficiales del SAE",
+    "horario": "Completar con datos oficiales del SAE",
+    "contacto": "Completar con datos oficiales del SAE"
+  },
+  "horario": {
+    "titulo": "Horarios",
+    "resumen": "Horario de clases y de atención.",
+    "verificado": false,
+    "pasos": [
+      "Consulta tu horario de clases en el sistema académico.",
+      "El horario de atención del SAE se indica abajo."
+    ],
+    "lugar": "SAE · Completar con datos oficiales del SAE",
+    "horario": "Completar con datos oficiales del SAE",
+    "contacto": "Completar con datos oficiales del SAE"
+  },
+  "cronograma": {
+    "titulo": "Cronograma académico",
+    "resumen": "Fechas importantes del ciclo.",
+    "verificado": false,
+    "pasos": [
+      "Consulta el calendario vigente.",
+      "Anota las fechas de matrícula, exámenes y pagos."
+    ],
+    "lugar": "SAE · Completar con datos oficiales del SAE",
+    "horario": "Completar con datos oficiales del SAE",
+    "contacto": "Completar con datos oficiales del SAE"
+  },
+  "sae": {
+    "titulo": "SAE",
+    "resumen": "Área del SAE: orientación y trámites para estudiantes.",
+    "verificado": false,
+    "pasos": [
+      "Cuéntanos qué necesitas.",
+      "Haz la seña del tema (por ejemplo: matrícula, constancia).",
+      "Te mostraremos la información y quién puede ayudarte."
+    ],
+    "lugar": "SAE · Completar con datos oficiales del SAE",
+    "horario": "Completar con datos oficiales del SAE",
+    "contacto": "Completar con datos oficiales del SAE"
+  },
+  "caja": {
+    "titulo": "Caja",
+    "resumen": "Atención de pagos presenciales.",
+    "verificado": false,
+    "pasos": [
+      "Lleva tu DNI o código de estudiante.",
+      "Indica el concepto de pago."
+    ],
+    "lugar": "SAE · Completar con datos oficiales del SAE",
+    "horario": "Completar con datos oficiales del SAE",
+    "contacto": "Completar con datos oficiales del SAE"
+  },
+  "biblioteca": {
+    "titulo": "Biblioteca",
+    "resumen": "Préstamo de libros y espacios de estudio.",
+    "verificado": false,
+    "pasos": [
+      "Presenta tu carné.",
+      "Consulta el reglamento de préstamo."
+    ],
+    "lugar": "SAE · Completar con datos oficiales del SAE",
+    "horario": "Completar con datos oficiales del SAE",
+    "contacto": "Completar con datos oficiales del SAE"
+  },
+  "psicologia": {
+    "titulo": "Psicología",
+    "resumen": "Orientación y apoyo emocional.",
+    "verificado": false,
+    "pasos": [
+      "Solicita una cita.",
+      "Indica si necesitas apoyo de un intérprete."
+    ],
+    "lugar": "SAE · Completar con datos oficiales del SAE",
+    "horario": "Completar con datos oficiales del SAE",
+    "contacto": "Completar con datos oficiales del SAE"
+  },
+  "secretaria": {
+    "titulo": "Secretaría académica",
+    "resumen": "Gestión de trámites académicos.",
+    "verificado": false,
+    "pasos": [
+      "Indica el trámite.",
+      "Presenta tus documentos."
+    ],
+    "lugar": "SAE · Completar con datos oficiales del SAE",
+    "horario": "Completar con datos oficiales del SAE",
+    "contacto": "Completar con datos oficiales del SAE"
+  },
+  "telefono": {
+    "titulo": "Teléfono",
+    "resumen": "Líneas de contacto de la universidad.",
+    "verificado": false,
+    "pasos": [
+      "Consulta el número de la oficina que necesitas."
+    ],
+    "lugar": "SAE · Completar con datos oficiales del SAE",
+    "horario": "Completar con datos oficiales del SAE",
+    "contacto": "Completar con datos oficiales del SAE"
+  },
+  "correo": {
+    "titulo": "Correo",
+    "resumen": "Correos de contacto de las oficinas.",
+    "verificado": false,
+    "pasos": [
+      "Consulta el correo de la oficina que necesitas."
+    ],
+    "lugar": "SAE · Completar con datos oficiales del SAE",
+    "horario": "Completar con datos oficiales del SAE",
+    "contacto": "Completar con datos oficiales del SAE"
+  },
+  "hola": {
+    "titulo": "¡Hola!",
+    "resumen": "Bienvenido al módulo de atención en Lengua de Señas Peruana del SAE. Haz la seña del tema que necesitas (por ejemplo: matrícula, pensión, constancia).",
+    "verificado": true
+  },
+  "gracias": {
+    "titulo": "¡Con gusto!",
+    "resumen": "Si necesitas algo más, haz otra seña.",
+    "verificado": true
+  },
+  "por_favor": {
+    "titulo": "Con gusto te ayudamos",
+    "resumen": "Haz la seña del tema que necesitas.",
+    "verificado": true
+  },
+  "adios": {
+    "titulo": "¡Hasta pronto!",
+    "resumen": "Gracias por visitar el SAE.",
+    "verificado": true
+  },
+  "si": {
+    "titulo": "Entendido",
+    "resumen": "Continúa con tu consulta.",
+    "verificado": true
+  },
+  "no": {
+    "titulo": "Entendido",
+    "resumen": "Puedes intentar con otro tema.",
+    "verificado": true
+  },
+  "ayuda": {
+    "titulo": "¿Necesitas ayuda?",
+    "resumen": "Haz la seña del tema (matrícula, pensión, constancia…) o elige un tema en la parte de abajo. Si prefieres, una persona del SAE puede atenderte.",
+    "verificado": true
+  },
+  "que": {
+    "titulo": "¿Sobre qué tema?",
+    "resumen": "Haz la seña del tema que te interesa (por ejemplo: matrícula, pensión, constancia) o elígelo abajo.",
+    "verificado": true
+  },
+  "donde": {
+    "titulo": "¿Sobre qué tema?",
+    "resumen": "Haz la seña del tema que te interesa (por ejemplo: matrícula, pensión, constancia) o elígelo abajo.",
+    "verificado": true
+  },
+  "cuando": {
+    "titulo": "¿Sobre qué tema?",
+    "resumen": "Haz la seña del tema que te interesa (por ejemplo: matrícula, pensión, constancia) o elígelo abajo.",
+    "verificado": true
+  },
+  "cuanto": {
+    "titulo": "¿Sobre qué tema?",
+    "resumen": "Haz la seña del tema que te interesa (por ejemplo: matrícula, pensión, constancia) o elígelo abajo.",
+    "verificado": true
+  },
+  "como": {
+    "titulo": "¿Sobre qué tema?",
+    "resumen": "Haz la seña del tema que te interesa (por ejemplo: matrícula, pensión, constancia) o elígelo abajo.",
+    "verificado": true
+  },
+  "quien": {
+    "titulo": "¿Sobre qué tema?",
+    "resumen": "Haz la seña del tema que te interesa (por ejemplo: matrícula, pensión, constancia) o elígelo abajo.",
+    "verificado": true
+  }
+}

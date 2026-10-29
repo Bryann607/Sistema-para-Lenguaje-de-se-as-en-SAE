@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es-PE">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atención en Lengua de Señas Peruana · UPSJB</title>
+  <meta name="description" content="Módulo de atención en Lengua de Señas Peruana (LSP) para el SAE de la Universidad Privada San Juan Bautista.">
+  <script>
+    // Si un script no carga, muestra un aviso en pantalla en lugar de dejar la página en blanco.
+    (function () {
+      function m(t) {
+        var d = document.getElementById('errorCarga');
+        if (!d) { d = document.createElement('div'); d.id = 'errorCarga'; d.setAttribute('role', 'alert');
+          d.style.cssText = 'position:fixed;left:0;right:0;bottom:0;z-index:99;background:#5c0119;color:#fff;padding:.75rem 1rem;font:15px system-ui,sans-serif';
+          (document.body || document.documentElement).appendChild(d); }
+        d.textContent = t;
+      }
+      window.addEventListener('error', function (e) {
+        var el = e.target;
+        if (el && el.tagName === 'SCRIPT') m('No se pudo cargar ' + (el.src || 'un script') + '. Revisa que el servidor local esté abierto en la carpeta correcta y que tengas internet.');
+        else if (!el || el === window) m('Error: ' + (e.message || 'desconocido'));
+      }, true);
+      window.addEventListener('unhandledrejection', function (e) { m('Error: ' + ((e.reason && e.reason.message) || e.reason)); });
+    })();
+  </script>
+  <link rel="icon" href="assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js" defer></script>
+  <script type="module" src="js/main.js"></script>
+</head>
+<body data-rol="usuario" data-vista="traductor">
+<a class="skip" href="#contenido">Saltar al contenido</a>
+
+<header class="cabecera">
+  <div class="cabecera-in">
+    <img class="logo" src="assets/logo-upsjb-rojo.png" alt="Universidad Privada San Juan Bautista">
+    <div class="titulo">
+      <h1>Atención en Lengua de Señas Peruana</h1>
+      <p>Módulo de información del SAE</p>
+    </div>
+    <button class="btn-borde" id="btnPantalla" type="button">Pantalla completa</button>
+  </div>
+</header>
+
+<main id="contenido" class="workspace usuario">
+
+  <section class="stage-col" aria-label="Cámara">
+    <div class="escudo">
+      <div class="escudo-in">
+        <video id="video" playsinline muted></video>
+        <canvas id="overlay"></canvas>
+        <div class="stage-vacio" id="stageVacio">
+          <img src="assets/logo-upsjb.png" alt="" width="84" height="84">
+          <p>Activa la cámara y colócate de modo que se vean tus hombros y tus manos.</p>
+        </div>
+        <div class="cuenta" id="cuenta" aria-live="assertive"></div>
+        <div class="stage-chips" id="chips" hidden>
+          <span class="chip" id="chipManos">Manos: 0</span>
+          <span class="chip" id="chipFps">0 fps</span>
+        </div>
+      </div>
+    </div>
+    <div class="stage-controles">
+      <button class="btn grande" id="btnCamara">Activar cámara</button>
+      <span class="estado" id="estadoCamara" role="status">Cámara apagada</span>
+    </div>
+    <ol class="uso">
+      <li>Activa la cámara.</li>
+      <li>Colócate para que se vean tus hombros y tus manos.</li>
+      <li>Haz la seña del tema que necesitas.</li>
+    </ol>
+  </section>
+
+  <section class="panel-col" aria-label="Traducción">
+    <p class="aviso" id="avisoModelo" role="status"></p>
+
+    <div class="tarjeta detectado">
+      <h2>Seña detectada</h2>
+      <p class="seña" id="senaActual" aria-live="polite">—</p>
+      <div class="barra" role="progressbar" aria-label="Confianza" aria-valuemin="0" aria-valuemax="100" id="confWrap"><i id="confBar"></i></div>
+      <label class="slider">Sensibilidad
+        <input type="range" id="umbral" min="50" max="95" value="80">
+        <output id="umbralOut">80 %</output>
+      </label>
+    </div>
+
+    <article class="tarjeta respuesta" id="respuesta" hidden>
+      <div class="fila-titulo">
+        <h2 id="rTitulo"></h2>
+        <button class="btn-texto" id="btnVoz" type="button" title="Leer la respuesta en voz alta">Leer en voz alta</button>
+      </div>
+      <p id="rResumen"></p>
+      <ol id="rPasos"></ol>
+      <dl class="datos-r">
+        <div><dt>Dónde</dt><dd id="rLugar"></dd></div>
+        <div><dt>Horario</dt><dd id="rHorario"></dd></div>
+        <div><dt>Contacto</dt><dd id="rContacto"></dd></div>
+      </dl>
+      <p class="pendiente" id="rPendiente" hidden>Contenido de ejemplo, pendiente de validar por el SAE.</p>
+    </article>
+
+    <div class="tarjeta">
+      <div class="fila-titulo"><h2>Conversación</h2><button class="btn-texto" id="btnLimpiar" type="button">Limpiar</button></div>
+      <ul class="fichas" id="fichas" aria-live="polite"><li class="vacio">Aún no hay señas detectadas.</li></ul>
+    </div>
+
+    <div class="tarjeta chatbot" aria-disabled="true">
+      <h2>Asistente de texto</h2>
+      <p>Próximamente podrás escribir tu consulta y recibir la respuesta aquí.</p>
+    </div>
+  </section>
+
+  <section class="temas" aria-label="Temas frecuentes">
+    <h2>También puedes elegir un tema</h2>
+    <div id="temas"></div>
+  </section>
+</main>
+
+<footer class="pie">
+  <span>Universidad Privada San Juan Bautista · Proyecto de accesibilidad en Lengua de Señas Peruana</span>
+  <span><span id="pieModelo">Modelo: sin cargar</span> <a id="linkAdmin" href="admin.html" hidden>· Administración</a></span>
+</footer>
+</body>
+</html>

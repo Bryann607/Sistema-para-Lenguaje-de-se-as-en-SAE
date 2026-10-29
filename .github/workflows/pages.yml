@@ -1,0 +1,45 @@
+name: Publicar en GitHub Pages
+
+# Se publica SOLO el módulo de usuario (index.html + modelo + contenido).
+# admin.html, la grabación de datos, el entrenamiento y los datasets NO se suben al sitio
+# público: el entrenamiento se hace en tu laptop y aquí solo llega el modelo ya entrenado.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  desplegar:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Armar el sitio público (sin administración)
+        run: |
+          mkdir -p _site/js _site/data
+          cp index.html _site/
+          cp -r css assets model _site/
+          [ -d audio ] && cp -r audio _site/ || true
+          cp data/vocabulario.json data/respuestas.json _site/data/
+          cp js/config.js js/features.js js/vision.js js/model.js js/app.js js/main.js js/traductor.js _site/js/
+          find _site -type f | sort
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v4
