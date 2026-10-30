@@ -37,12 +37,38 @@ const wrap = (req) => new Promise((res, rej) => { req.onsuccess = () => res(req.
 export const db = {
   async add(sample) { return tx('readwrite', (s) => wrap(s.add(sample))); },
   async addMany(samples) { return tx('readwrite', (s) => Promise.all(samples.map((x) => wrap(s.add(x))))); },
+  async markCloudUploaded(ids) {
+    if (!ids.length) return;
+    const pendientes = new Set(ids);
+    return tx('readwrite', (s) => new Promise((resolve, reject) => {
+      const req = s.openCursor();
+      req.onsuccess = () => {
+        const cur = req.result;
+        if (!cur) return resolve();
+        if (pendientes.has(cur.value.id)) {
+          cur.value.cloudUploaded = true;
+          cur.update(cur.value);
+        }
+        cur.continue();
+      };
+      req.onerror = () => reject(req.error);
+    }));
+  },
   async all() { return tx('readonly', (s) => wrap(s.getAll())); },
   async count() { return tx('readonly', (s) => wrap(s.count())); },
   async counts() {
     const all = await this.all();
     const c = {};
     for (const m of all) c[m.label] = (c[m.label] || 0) + 1;
+    return c;
+  },
+  // Cuenta fuentes independientes: todas las ventanas de un mismo video (mismo «grupo») cuentan como una.
+  async countsIndependientes() {
+    const c = {}, vistos = new Set();
+    for (const m of await this.all()) {
+      if (m.grupo) { const k = `${m.label}|${m.grupo}`; if (vistos.has(k)) continue; vistos.add(k); }
+      c[m.label] = (c[m.label] || 0) + 1;
+    }
     return c;
   },
   async removeLast() {

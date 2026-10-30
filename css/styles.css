@@ -192,3 +192,19 @@ body[data-vista="entrenar"] .stage-col { display: none; }
   .tab { flex: 1; padding: .7rem .4rem; }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+
+/* ---------- subtítulos y voz ---------- */
+.subtitulos { margin-top: 1rem; background: #23252b; color: #fff; border-radius: 14px; padding: 1rem 1.25rem; max-width: 40rem; }
+.sub-glosas { margin: 0 0 .35rem; font: 700 .85rem var(--f-titulo); font-stretch: 90%; letter-spacing: .08em; color: var(--plata-2); min-height: 1.2em; }
+.sub-frase { margin: 0; font: 700 clamp(1.4rem, 3vw, 2rem)/1.25 var(--f-titulo); font-stretch: 90%; min-height: 2.5em; }
+.sub-frase.vacio { font-weight: 400; font-size: 1.05rem; color: var(--plata-3); }
+.sub-frase.provisional { color: var(--plata-2); font-style: italic; }
+.sub-frase .hablando { background: var(--accion); border-radius: 4px; padding: 0 .2em; margin: 0 -.2em; }
+.sub-ctrl { display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap; margin-top: .75rem; padding-top: .75rem; border-top: 1px solid rgba(255,255,255,.2); }
+.sub-ctrl .check { margin: 0; color: #fff; }
+.sub-ctrl .btn-texto { color: #fff; }
+.sub-ctrl .slider { color: var(--plata-2); }
+.sub-ctrl :focus-visible { outline-color: #fff; }
+.sub-ctrl .slider { margin-top: 0; flex: 1 1 260px; }
+
+.lista-nube { margin: .75rem 0 0; padding-left: 1.1rem; font-size: .9rem; color: var(--suave); max-height: 10rem; overflow: auto; }

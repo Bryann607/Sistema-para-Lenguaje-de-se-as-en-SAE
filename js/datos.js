@@ -36,9 +36,10 @@ export function initDatos(app) {
 
   // ---------- avance ----------
   async function actualizarAvance() {
-    const counts = await db.counts();
+    const counts = await db.countsIndependientes();   // un video = 1, aunque genere varias ventanas
     const total = Object.values(counts).reduce((a, b) => a + b, 0);
-    $('#totalMuestras').textContent = `${total} muestra${total === 1 ? '' : 's'}`;
+    const ventanas = await db.count();
+    $('#totalMuestras').textContent = `${total} fuente${total === 1 ? '' : 's'}` + (ventanas !== total ? ` · ${ventanas} muestras` : '');
     const ul = $('#avance'); ul.replaceChildren();
     const fila = (id, nombre) => {
       const n = counts[id] || 0;
@@ -63,6 +64,7 @@ export function initDatos(app) {
     }
   }
   sel.addEventListener('change', actualizarAvance);
+  window.addEventListener('lsp-datos-cambio', actualizarAvance);   // lo emite la importación de videos
   $('#soloPiloto').addEventListener('change', () => { construirSelector(); actualizarAvance(); });
 
   // ---------- grabación ----------

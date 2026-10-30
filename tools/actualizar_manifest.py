@@ -13,7 +13,7 @@ CARPETA = Path(__file__).resolve().parent.parent / "data" / "dataset"
 def main():
     CARPETA.mkdir(parents=True, exist_ok=True)
     archivos = sorted(p.name for p in CARPETA.iterdir()
-                      if p.is_file() and p.name.endswith((".json.gz", ".json")) and p.name != "manifest.json")
+                    if p.is_file() and p.name.endswith((".json.gz", ".json")) and p.name != "manifest.json")
     (CARPETA / "manifest.json").write_text(
         json.dumps({"_ayuda": "Generado automáticamente por tools/servidor.py", "archivos": archivos}, ensure_ascii=False, indent=2),
         encoding="utf-8")

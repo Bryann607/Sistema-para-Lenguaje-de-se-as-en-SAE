@@ -9,7 +9,7 @@ export async function exportDataset(samples) {
     formato: FORMAT, version: 1, seqLen: SEQ_LEN, featureDim: FEATURE_DIM,
     creado: new Date().toISOString(),
     muestras: samples.map((m) => ({
-      label: m.label, signer: m.signer || '', ts: m.ts || 0,
+      label: m.label, signer: m.signer || '', ts: m.ts || 0, grupo: m.grupo || '',
       data: Array.from(m.data, (v) => Math.round(v * 1000) / 1000),
     })),
   };
@@ -41,7 +41,7 @@ export async function parseDataset(input) {
   const expected = SEQ_LEN * FEATURE_DIM;
   return obj.muestras
     .filter((m) => m && m.label && Array.isArray(m.data) && m.data.length === expected)
-    .map((m) => ({ label: m.label, signer: m.signer || '', ts: m.ts || 0, data: Float32Array.from(m.data) }));
+    .map((m) => ({ label: m.label, signer: m.signer || '', ts: m.ts || 0, grupo: m.grupo || '', data: Float32Array.from(m.data) }));
 }
 
 /** Descarga los datasets listados en data/dataset/manifest.json (si existen). */

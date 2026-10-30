@@ -59,8 +59,10 @@ async function iniciarPanel() {
   try { await loadContent(app); }
   catch (e) { $('#gateMsg').textContent = `No se pudieron leer los datos (${e.message}).`; return; }
 
-  const [{ initDatos }, { initEntrenar }] = await Promise.all([import('./datos.js'), import('./entrenar.js')]);
+  const [{ initDatos }, { initEntrenar }, { initVideos }, { initNube }] = await Promise.all([import('./datos.js'), import('./entrenar.js'), import('./videos.js'), import('./nubeui.js')]);
   initDatos(app);
+  initVideos(app);
+  initNube(app);
   initEntrenar(app);
   app.setVista('datos');
   await loadModel(app);

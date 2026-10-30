@@ -59,3 +59,25 @@ export function flattenSequence(frames) {
   frames.forEach((f, i) => out.set(f, i * FEATURE_DIM));
   return out;
 }
+
+// ---------- espejo (personas zurdas) ----------
+// Pares izquierda/derecha de los 25 puntos del cuerpo de MediaPipe.
+const PARES_POSE = [[1, 4], [2, 5], [3, 6], [7, 8], [9, 10], [11, 12], [13, 14], [15, 16], [17, 18], [19, 20], [21, 22], [23, 24]];
+const PERM_POSE = Array.from({ length: POSE_POINTS }, (_, i) => i);
+for (const [a, b] of PARES_POSE) { PERM_POSE[a] = b; PERM_POSE[b] = a; }
+
+/** Refleja un fotograma como si la seña la hiciera una persona zurda (x → −x, izquierda ↔ derecha). */
+export function espejarFrame(f) {
+  const out = new Float32Array(FEATURE_DIM);
+  const punto = (dst, src) => {
+    const x = f[src], y = f[src + 1], z = f[src + 2];
+    if (x === 0 && y === 0 && z === 0) return;           // punto ausente: se deja en cero
+    out[dst] = -x; out[dst + 1] = y; out[dst + 2] = z;
+  };
+  for (let i = 0; i < POSE_POINTS; i++) punto(PERM_POSE[i] * 3, i * 3);
+  for (let p = 0; p < 21; p++) {
+    punto(LEFT_OFFSET + p * 3, RIGHT_OFFSET + p * 3);
+    punto(RIGHT_OFFSET + p * 3, LEFT_OFFSET + p * 3);
+  }
+  return out;
+}

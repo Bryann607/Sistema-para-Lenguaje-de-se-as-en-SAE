@@ -27,6 +27,10 @@ no necesita servidor propio ni Python para usarse, por lo que se puede publicar 
 > proyecto original (ASL, 4 palabras) se eliminó a propósito. La página incluye todo lo
 > necesario para grabar el dataset y entrenar el modelo.
 
+## Nuevo: videos, subtítulos y voz
+
+Importar videos de LSP para entrenar, subtítulos con oraciones en español y lectura en voz alta: ver [`docs/NUEVAS_FUNCIONES.md`](docs/NUEVAS_FUNCIONES.md). Nube opcional con Supabase (datasets y modelo centralizados): [`docs/SUPABASE.md`](docs/SUPABASE.md).
+
 ## Empezar
 
 - **Perfiles, laptop y GitHub Pages:** lee [`docs/INSTRUCCIONES.md`](docs/INSTRUCCIONES.md).
@@ -46,6 +50,7 @@ css/styles.css        Tema UPSJB
 js/                   Lógica (app, cámara, características, modelo, vistas, auth)
 data/vocabulario.json Señas a reconocer (39 iniciales, editables)
 data/respuestas.json  Información que se muestra por cada seña
+data/frases.json      Reglas para armar la oración de los subtítulos
 data/dataset/         Datasets exportados (.json.gz) que se versionan en Git
 audio/                (opcional) Voz grabada por respuesta, p. ej. matricula.mp3
 model/                Modelo entrenado (modelo-lsp.json, .weights.bin, etiquetas.json) + HISTORIAL.md

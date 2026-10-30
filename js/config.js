@@ -18,6 +18,14 @@ export const LABELS_URL = 'model/etiquetas.json';
 export const MODEL_IDB = 'indexeddb://lsp-upsjb';
 export const DATASET_MANIFEST = 'data/dataset/manifest.json';
 
+// ---- Nube (Supabase), OPCIONAL: déjalas vacías para trabajar solo con Git (ver docs/SUPABASE.md) ----
+// La clave «anon» es pública por diseño; la protección real son las reglas RLS de supabase/esquema.sql.
+
+export const SUPABASE_URL = 'https://etoipofuywnxrarbrkfc.supabase.co';
+export const SUPABASE_ANON_KEY = 'sb_publishable_xzhNUGWLiaqAB-1buZsRoQ_gPzX7YO6';
+export const SUPABASE_JS = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/+esm';
+export const MODELO_NUBE_BASE = SUPABASE_URL ? `${SUPABASE_URL}/storage/v1/object/public/modelo/actual` : '';
+
 export const MP_VERSION = '0.10.14';
 export const MP_MODULE = `https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@${MP_VERSION}/+esm`;
 export const MP_WASM = `https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@${MP_VERSION}/wasm`;

@@ -4,6 +4,7 @@ import { REPOSO } from './config.js';
 import { db } from './db.js';
 import { trainModel, downloadModelFiles } from './model.js';
 import { loadRepoDatasets, downloadBlob } from './dataset.js';
+import { descargarDatasets } from './nube.js';
 
 const $ = (s) => document.querySelector(s);
 
@@ -37,6 +38,10 @@ export function initEntrenar(app) {
         try { muestras = muestras.concat(await loadRepoDatasets(addLog)); }
         catch (e) { addLog(`No se pudieron leer los datasets del repositorio: ${e.message}`); }
       }
+      if ($('#optNube').checked && !$('#optNube').disabled) {
+        try { muestras = muestras.concat(await descargarDatasets(addLog)); }
+        catch (e) { addLog(`No se pudieron leer los datasets de la nube: ${e.message}`); }
+      }
       const vistos = new Set(), antes = muestras.length;
       muestras = muestras.filter((m) => {            // mismo señante + fecha + seña = misma muestra
         if (!m.ts) return true;
@@ -62,6 +67,7 @@ export function initEntrenar(app) {
         },
       });
       ultimo = out;
+      app.ultimoEntrenamiento = out;          // lo usa «Publicar modelo en la nube»
       app.setModel(out.model, out.labels, 'entrenado en este navegador');
       const evaluadas = out.perClass.filter((c) => c.n);
       const total = evaluadas.reduce((a, c) => a + c.n, 0);

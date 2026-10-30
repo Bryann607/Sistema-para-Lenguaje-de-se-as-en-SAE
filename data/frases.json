@@ -1,0 +1,39 @@
+{
+  "_ayuda": "Reglas para convertir las señas reconocidas en una oración en español. Son reglas de PARTIDA: deben ser validadas por personas señantes o intérpretes de LSP. {tema} se reemplaza por los temas detectados (con su artículo, ver «sustantivos»). Para casos especiales agrega una entrada en «plantillas»: se usa la que contenga más señas, sin importar el orden en que se hicieron.",
+  "sustantivos": {
+    "matricula": "la matrícula", "pension": "la pensión", "pago": "el pago", "constancia": "la constancia",
+    "certificado": "el certificado", "carne": "el carné", "beca": "la beca", "traslado": "el traslado",
+    "retiro": "el retiro", "documentos": "los documentos", "requisitos": "los requisitos", "admision": "la admisión",
+    "carrera": "la carrera", "ciclo": "el ciclo", "curso": "el curso", "examen": "el examen",
+    "notas": "las notas", "horario": "el horario", "cronograma": "el cronograma",
+    "sae": "el SAE", "caja": "la caja", "biblioteca": "la biblioteca", "psicologia": "el área de psicología",
+    "secretaria": "la secretaría", "telefono": "el teléfono", "correo": "el correo"
+  },
+  "inicio": { "hola": "Hola.", "si": "Sí.", "no": "No." },
+  "final": { "por_favor": "Por favor.", "gracias": "Gracias.", "adios": "Adiós." },
+  "ayuda": { "solo": "Necesito ayuda.", "con_tema": "Necesito ayuda con {tema}." },
+  "preguntas": {
+    "que":    { "con_tema": "¿Qué información hay sobre {tema}?", "solo": "¿Qué?" },
+    "donde":  { "con_tema": "¿Dónde puedo consultar sobre {tema}?", "con_lugar": "¿Dónde está {tema}?", "solo": "¿Dónde?" },
+    "cuando": { "con_tema": "¿Cuándo es {tema}?", "solo": "¿Cuándo?" },
+    "cuanto": { "con_tema": "¿Cuánto cuesta {tema}?", "solo": "¿Cuánto cuesta?" },
+    "como":   { "con_tema": "¿Cómo puedo gestionar {tema}?", "solo": "¿Cómo?" },
+    "quien":  { "con_tema": "¿Quién me puede atender sobre {tema}?", "solo": "¿Quién?" }
+  },
+  "sinPregunta": "Necesito información sobre {tema}.",
+  "plantillas": [
+    { "senas": ["cuando", "pension"], "texto": "¿Cuándo vence la pensión?" },
+    { "senas": ["cuando", "matricula"], "texto": "¿Cuándo es la matrícula?" },
+    { "senas": ["cuanto", "pension"], "texto": "¿Cuánto es la pensión?" },
+    { "senas": ["como", "pago"], "texto": "¿Cómo puedo realizar el pago?" },
+    { "senas": ["donde", "pago"], "texto": "¿Dónde puedo pagar?" },
+    { "senas": ["como", "beca"], "texto": "¿Cómo puedo postular a una beca?" },
+    { "senas": ["que", "requisitos", "beca"], "texto": "¿Qué requisitos necesito para la beca?" },
+    { "senas": ["que", "requisitos", "matricula"], "texto": "¿Qué requisitos necesito para la matrícula?" },
+    { "senas": ["que", "requisitos", "constancia"], "texto": "¿Qué requisitos necesito para la constancia?" },
+    { "senas": ["que", "requisitos", "certificado"], "texto": "¿Qué requisitos necesito para el certificado?" },
+    { "senas": ["que", "requisitos", "traslado"], "texto": "¿Qué requisitos necesito para el traslado?" },
+    { "senas": ["que", "requisitos", "retiro"], "texto": "¿Qué requisitos necesito para el retiro?" },
+    { "senas": ["que", "requisitos", "admision"], "texto": "¿Qué requisitos necesito para la admisión?" }
+  ]
+}

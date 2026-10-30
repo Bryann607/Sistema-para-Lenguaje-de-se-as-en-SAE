@@ -1,7 +1,7 @@
 """Servidor local de SenasSJB.
 
 Uso:  python tools/servidor.py          -> abre el módulo de usuario
-      python tools/servidor.py admin    -> abre la administración
+        python tools/servidor.py admin    -> abre la administración
 
 - Busca un puerto libre (8000, 8001, ...), así no choca con un servidor viejo que siga abierto.
 - Siempre sirve la carpeta de ESTE proyecto, sin importar desde dónde lo ejecutes.

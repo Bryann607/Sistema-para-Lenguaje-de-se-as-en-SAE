@@ -14,6 +14,7 @@ export function createApp() {
     vision: null,
     vocab: { categorias: [], senas: [] },
     respuestas: {},
+    frases: {},           // reglas de data/frases.json (oraciones de los subtítulos)
     model: null,          // { model, labels, origen }
     recognizer: null,
     cameraOn: false,
@@ -66,6 +67,7 @@ export async function loadJson(url) {
 
 export async function loadContent(app) {
   [app.vocab, app.respuestas] = await Promise.all([loadJson('data/vocabulario.json'), loadJson('data/respuestas.json')]);
+  try { app.frases = await loadJson('data/frases.json'); } catch { app.frases = {}; }   // opcional
 }
 
 export async function loadModel(app) {

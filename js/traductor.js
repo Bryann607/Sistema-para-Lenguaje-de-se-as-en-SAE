@@ -2,6 +2,8 @@
 
 import { SEQ_LEN, REPOSO } from './config.js';
 import { flattenSequence } from './features.js';
+import { componerFrase } from './frases.js';
+import { Voz } from './voz.js';
 
 const $ = (s) => document.querySelector(s);
 
@@ -9,6 +11,52 @@ export function initTraductor(app) {
   let buffer = [], manos = [], votos = [], tick = 0;
   let ultimo = { id: null, t: 0 };
   const fichas = $('#fichas');
+  const voz = new Voz();
+
+  // ---------- subtítulos + voz ----------
+  // Cada seña confirmada se suma a la frase en curso. Pasada la pausa elegida sin nuevas señas, la
+  // frase se cierra: se muestra la oración final y se lee en voz alta EXACTAMENTE ese mismo texto.
+  let frase = [], tFrase = null, ultimaFrase = '', palabras = [];
+  const subFrase = $('#subFrase');
+
+  function mostrarFrase(texto, estado) {                       // estado: 'vacio' | 'provisional' | 'final'
+    subFrase.replaceChildren(); palabras = [];
+    subFrase.className = `sub-frase ${estado === 'final' ? '' : estado}`.trim();
+    let pos = 0;
+    for (const trozo of texto.split(/(\s+)/)) {
+      if (!trozo) continue;
+      if (/^\s+$/.test(trozo)) subFrase.appendChild(document.createTextNode(trozo));
+      else { const sp = document.createElement('span'); sp.textContent = trozo; subFrase.appendChild(sp); palabras.push({ ini: pos, fin: pos + trozo.length, el: sp }); }
+      pos += trozo.length;
+    }
+  }
+  function resaltar(charIndex) {
+    palabras.forEach((p) => p.el.classList.toggle('hablando', charIndex >= p.ini && charIndex < p.fin));
+  }
+  const quitarResalte = () => palabras.forEach((p) => p.el.classList.remove('hablando'));
+
+  function sumarASubtitulo(id) {
+    voz.cancelar();                                            // una seña nueva interrumpe la lectura anterior
+    frase.push(id);
+    $('#subGlosas').textContent = frase.map((i) => app.nombreDe(i).toUpperCase()).join(' · ');
+    mostrarFrase(componerFrase(frase, app.vocab, app.frases), 'provisional');
+    clearTimeout(tFrase);
+    tFrase = setTimeout(cerrarFrase, Number($('#pausa').value) * 1000);
+  }
+  function cerrarFrase() {
+    clearTimeout(tFrase);
+    if (!frase.length) return;
+    const texto = componerFrase(frase, app.vocab, app.frases);
+    frase = [];
+    if (!texto) return;
+    ultimaFrase = texto;
+    mostrarFrase(texto, 'final');
+    voz.decir(texto, { onPalabra: resaltar, onFin: quitarResalte });
+  }
+  $('#vozOn').addEventListener('change', (e) => { voz.activa = e.target.checked; if (!voz.activa) voz.cancelar(); });
+  $('#btnRepetir').addEventListener('click', () => { if (ultimaFrase) voz.decir(ultimaFrase, { forzar: true, onPalabra: resaltar, onFin: quitarResalte }); });
+  $('#pausa').addEventListener('input', (e) => { $('#pausaOut').textContent = `${e.target.value} s`; });
+  if (!voz.disponible) { $('#vozOn').checked = false; $('#vozOn').disabled = true; $('#btnRepetir').hidden = true; }
 
   // ---------- respuesta del SAE ----------
   let textoVoz = '';
@@ -48,13 +96,15 @@ export function initTraductor(app) {
 
   function confirmar(id) {
     agregarFicha(id);
+    sumarASubtitulo(id);
     mostrarRespuesta(id);
     programarReinicio();
   }
 
   function limpiar() {
     clearTimeout(temporizador);
-    if ('speechSynthesis' in window) speechSynthesis.cancel();
+    voz.cancelar(); clearTimeout(tFrase); frase = []; ultimaFrase = '';
+    $('#subGlosas').textContent = ''; mostrarFrase('Los subtítulos aparecerán aquí.', 'vacio');
     fichas.replaceChildren();
     const li = document.createElement('li'); li.className = 'vacio'; li.textContent = 'Aún no hay señas detectadas.';
     fichas.appendChild(li);
@@ -62,10 +112,8 @@ export function initTraductor(app) {
   }
   $('#btnLimpiar').addEventListener('click', limpiar);
   $('#btnVoz').addEventListener('click', () => {
-    if (!('speechSynthesis' in window) || !textoVoz) return;
-    speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(textoVoz); u.lang = 'es-PE';
-    speechSynthesis.speak(u);
+    if (!textoVoz) return;
+    voz.decir(textoVoz, { forzar: true });
   });
 
   // ---------- indicadores ----------

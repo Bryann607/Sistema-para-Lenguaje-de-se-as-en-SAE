@@ -1,7 +1,7 @@
 // Modelo de reconocimiento (TensorFlow.js): construcción, entrenamiento en el navegador,
 // guardado, carga y predicción. `tf` es global (se carga desde index.html).
 
-import { SEQ_LEN, FEATURE_DIM, REPOSO, MODEL_URL, LABELS_URL, MODEL_IDB } from './config.js';
+import { SEQ_LEN, FEATURE_DIM, REPOSO, MODEL_URL, LABELS_URL, MODEL_IDB, MODELO_NUBE_BASE } from './config.js';
 
 const SAMPLE_SIZE = SEQ_LEN * FEATURE_DIM;
 const LS_LABELS = 'lsp-upsjb-etiquetas';
@@ -67,12 +67,30 @@ export async function trainModel(samples, opt) {
   if (labels.length < 2) throw new Error('Se necesitan al menos 2 clases con muestras suficientes (incluye "reposo").');
   if (!labels.includes(REPOSO)) onLog('Aviso: no hay muestras de "reposo". El modelo detectará señas aun sin que se haga ninguna.');
 
-  // División estratificada ~15 % validación
-  const train = [], val = [];
+  // División estratificada ~15 % validación. Las muestras que comparten «grupo» (ventanas del mismo
+  // video) van siempre juntas a un lado, para que la validación no se infle con casi-duplicados.
+  const train = [], val = [], sinVal = [], pocasFuentes = [];
   for (const l of labels) {
-    const arr = byLabel.get(l).slice().sort(() => Math.random() - 0.5);
-    const nv = Math.max(1, Math.round(arr.length * 0.15));
-    val.push(...arr.slice(0, nv)); train.push(...arr.slice(nv));
+    const grupos = new Map();
+    byLabel.get(l).forEach((s, i) => { const g = s.grupo || `#${i}`; if (!grupos.has(g)) grupos.set(g, []); grupos.get(g).push(s); });
+    const lista = [...grupos.values()].sort(() => Math.random() - 0.5);
+    if (lista.length < 3) pocasFuentes.push(`${l} (${lista.length})`);
+    if (lista.length < 2) { train.push(...lista[0]); sinVal.push(l); continue; }
+    const objetivo = Math.max(1, Math.round(byLabel.get(l).length * 0.15));
+    let nv = 0;
+    lista.forEach((g, i) => {
+      if (nv < objetivo && lista.length - i > 1) { val.push(...g); nv += g.length; } else train.push(...g);
+    });
+  }
+  if (pocasFuentes.length) onLog(`Aviso: menos de 3 fuentes independientes (señantes/videos) en: ${pocasFuentes.join(', ')}. El modelo puede memorizar a esa persona.`);
+  if (sinVal.length) onLog(`Sin validación independiente (una sola fuente): ${sinVal.join(', ')}.`);
+  if (!val.length) {
+    onLog('Aviso: no hay fuentes suficientes para separar validación; se usa una parte al azar (el acierto saldrá inflado).');
+    const mezcla = train.slice().sort(() => Math.random() - 0.5);
+    const nv = Math.max(1, Math.round(mezcla.length * 0.15));
+    val.push(...mezcla.slice(0, nv));
+    const fuera = new Set(mezcla.slice(0, nv));
+    train.splice(0, train.length, ...train.filter((x) => !fuera.has(x)));
   }
   const trainAug = [...train];
   for (let k = 1; k < aug; k++) for (const s of train) trainAug.push({ label: s.label, data: augment(s.data) });
@@ -153,7 +171,13 @@ export async function loadBestModel() {
     const labels = await loadLabels(model, LABELS_URL);
     return labels ? { model, labels, origen: 'entrenado en este navegador' } : null;
   };
-  const orden = local ? [desdeNavegador, desdeRepo] : [desdeRepo, desdeNavegador];
+  const desdeNube = async () => {                       // modelo publicado en Supabase (si está configurado)
+    if (!MODELO_NUBE_BASE) return null;
+    const model = await tf.loadLayersModel(`${MODELO_NUBE_BASE}/modelo-lsp.json`);
+    const labels = await loadLabels(model, `${MODELO_NUBE_BASE}/etiquetas.json`);
+    return labels ? { model, labels, origen: 'nube (Supabase)' } : null;
+  };
+  const orden = local ? [desdeNavegador, desdeNube, desdeRepo] : [desdeNube, desdeRepo, desdeNavegador];
   for (const intento of orden) {
     try { const r = await intento(); if (r) return r; } catch { /* no hay modelo en esta ubicación */ }
   }

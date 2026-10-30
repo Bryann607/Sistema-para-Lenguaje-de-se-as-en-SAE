@@ -111,6 +111,46 @@
       <p class="msg" id="recMsg" role="status">Activa la cámara para grabar.</p>
     </div>
 
+    <div class="tarjeta" id="tarjetaNube">
+      <div class="fila-titulo"><h2>Nube (Supabase)</h2><span class="ayuda" id="nubeEstado">…</span></div>
+      <p class="ayuda">Opcional. Centraliza los datasets del equipo sin pasar por Git y publica el modelo para el sitio de usuarios. Solo se suben coordenadas.</p>
+      <form id="nubeForm" class="form" autocomplete="on">
+        <label>Correo <input id="nubeCorreo" type="email" autocomplete="username" required></label>
+        <label>Contraseña <input id="nubeClave" type="password" autocomplete="current-password" required></label>
+        <div class="acciones"><button class="btn" type="submit">Ingresar a la nube</button></div>
+      </form>
+      <div id="nubeConectado" hidden>
+        <div class="acciones" id="nubeAcciones">
+          <button class="btn" id="nubeSubir" type="button">Subir muestras nuevas</button>
+          <button class="btn btn-sec" id="nubeListar" type="button">Ver datasets en la nube</button>
+          <button class="btn-texto" id="nubeSalir" type="button">Cerrar sesión</button>
+        </div>
+        <ul class="lista-nube" id="nubeLista"></ul>
+      </div>
+      <p class="msg" id="nubeMsg" role="status"></p>
+    </div>
+
+    <div class="tarjeta" id="tarjetaVideos">
+      <h2>Importar videos de señas</h2>
+      <p class="ayuda">Sube videos de LSP (de preferencia una seña por video, con hombros y manos visibles). Se analizan con el mismo detector que la cámara y se convierten en muestras. Solo se guardan coordenadas de puntos: el video no sale de tu computadora.</p>
+      <div class="form">
+        <label>Seña de estos videos
+          <select id="vidSena"></select>
+        </label>
+        <label>Identificador de la fuente
+          <input id="vidSigner" type="text" value="V01" maxlength="12" autocomplete="off">
+        </label>
+      </div>
+      <label class="check"><input type="checkbox" id="vidEspejo" checked> Añadir versión en espejo (reconoce también a personas zurdas)</label>
+      <label class="check"><input type="checkbox" id="vidReposo" checked> Usar los tramos sin manos del video como «Reposo»</label>
+      <div class="acciones">
+        <label class="btn" tabindex="0">Elegir videos…<input type="file" id="vidArchivos" accept="video/*" multiple hidden></label>
+      </div>
+      <div class="barra grande" id="vidWrap" hidden><i id="vidBar"></i></div>
+      <p class="msg" id="vidMsg" role="status">Cada video cuenta como una sola fuente en el avance, aunque genere varias muestras.</p>
+      <pre class="log" id="vidLog" hidden></pre>
+    </div>
+
     <div class="tarjeta">
       <div class="fila-titulo"><h2>Avance del dataset</h2><span class="total" id="totalMuestras">0 muestras</span></div>
       <ul class="avance" id="avance"></ul>
@@ -142,6 +182,7 @@
         <label>Mínimo de muestras por seña <input id="optMin" type="number" min="3" max="100" value="6"></label>
       </div>
       <label class="check"><input type="checkbox" id="optRepo" checked> Incluir datasets de la carpeta <code>data/dataset</code> del repositorio</label>
+      <label class="check"><input type="checkbox" id="optNube" checked> Incluir datasets de la nube (Supabase; requiere haber iniciado sesión en Datos)</label>
       <div class="acciones">
         <button class="btn" id="btnEntrenar">Entrenar</button>
         <button class="btn btn-sec" id="btnParar" hidden>Detener</button>
@@ -157,7 +198,9 @@
       <table class="tabla"><thead><tr><th>Seña</th><th>Muestras de validación</th><th>Acierto</th></tr></thead><tbody id="resTabla"></tbody></table>
       <div class="acciones sep">
         <button class="btn" id="btnDescargar">Descargar modelo para el repositorio</button>
+        <button class="btn btn-sec" id="btnPublicar" type="button">Publicar modelo en la nube</button>
       </div>
+      <p class="msg" id="publicarMsg" role="status"></p>
       <p class="ayuda">Copia los archivos descargados (<code>modelo-lsp.json</code>, <code>modelo-lsp.weights.bin</code> y <code>etiquetas.json</code>) a la carpeta <code>model/</code> y sube los cambios a GitHub.</p>
     </div>
   </section>
