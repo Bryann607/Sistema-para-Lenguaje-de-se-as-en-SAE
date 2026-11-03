@@ -98,6 +98,7 @@ export function initDatos(app) {
         setMsg(`${app.nombreDe(label)}: repetición ${guardadas + 1} de ${reps}. Prepárate…`);
         const r = await grabarUna(guardadas === 0 ? 3 : 2);
         if (!r) break;
+        if (cancelar || r.frames.length < SEQ_LEN) break;   // se canceló a mitad: la muestra incompleta NO se guarda
         const conManos = r.manos.filter(Boolean).length / SEQ_LEN;
         if (label !== REPOSO && conManos < 0.4) {
           setMsg('Casi no se vieron las manos. Colócate más lejos de modo que se vean hombros y manos, y repite.', 'error');

@@ -7,3 +7,6 @@ node_modules/
 
 # se genera solo al iniciar el servidor
 data/dataset/manifest.json
+
+# generado al publicar
+_site/

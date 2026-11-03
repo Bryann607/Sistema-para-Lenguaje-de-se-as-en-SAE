@@ -2,6 +2,10 @@
 // guardado, carga y predicción. `tf` es global (se carga desde index.html).
 
 import { SEQ_LEN, FEATURE_DIM, REPOSO, MODEL_URL, LABELS_URL, MODEL_IDB, MODELO_NUBE_BASE } from './config.js';
+import { augment, planDeAumento } from './aumento.js';
+import { matrizConfusion, paresConfundidos } from './evaluacion.js';
+
+export { augment };   // compatibilidad: antes vivía en este archivo
 
 const SAMPLE_SIZE = SEQ_LEN * FEATURE_DIM;
 const LS_LABELS = 'lsp-upsjb-etiquetas';
@@ -28,35 +32,16 @@ export function buildModel(nClasses, arch = 'conv') {
   return m;
 }
 
-// ---------- aumento de datos ----------
-function gauss() { return Math.sqrt(-2 * Math.log(Math.random() || 1e-9)) * Math.cos(2 * Math.PI * Math.random()); }
-
-export function augment(src) {
-  const out = new Float32Array(SAMPLE_SIZE);
-  const s = 0.9 + Math.random() * 0.2;
-  const dx = (Math.random() - 0.5) * 0.16, dy = (Math.random() - 0.5) * 0.16;
-  const shift = Math.floor(Math.random() * 7) - 3; // desplazamiento temporal ±3 fotogramas
-  for (let t = 0; t < SEQ_LEN; t++) {
-    const st = Math.min(SEQ_LEN - 1, Math.max(0, t + shift));
-    for (let p = 0; p < FEATURE_DIM; p += 3) {
-      const i = st * FEATURE_DIM + p, o = t * FEATURE_DIM + p;
-      const x = src[i], y = src[i + 1], z = src[i + 2];
-      if (x === 0 && y === 0 && z === 0) continue; // punto ausente: se deja en cero
-      out[o] = x * s + dx + gauss() * 0.01;
-      out[o + 1] = y * s + dy + gauss() * 0.01;
-      out[o + 2] = z * s + gauss() * 0.01;
-    }
-  }
-  return out;
-}
-
 // ---------- entrenamiento ----------
 /**
  * @param {Array<{label:string,data:Float32Array}>} samples
- * @param {{arch:string,epochs:number,augment:number,minPerClass:number,onLog:Function,onEpoch:Function}} opt
+ * @param {{arch:string,epochs:number,augment:number,minPerClass:number,suavizado?:number,paciencia?:number,onLog:Function,onEpoch:Function}} opt
+ *   augment: ≤1 sin aumento; >1 equilibra las clases hasta (mediana × augment) con variantes realistas (ver aumento.js).
+ *   suavizado: suavizado de etiquetas (0–0.2); evita que el modelo se vuelva «demasiado seguro» con pocos datos.
+ *   paciencia: épocas sin mejorar la validación antes de detener (0 = nunca detener antes).
  */
 export async function trainModel(samples, opt) {
-  const { arch = 'conv', epochs = 40, augment: aug = 2, minPerClass = 6, onLog = () => {}, onEpoch = () => {} } = opt;
+  const { arch = 'conv', epochs = 40, augment: aug = 2, minPerClass = 6, suavizado = 0.05, paciencia = 12, onLog = () => {}, onEpoch = () => {} } = opt;
   const valid = samples.filter((s) => s.data?.length === SAMPLE_SIZE);
   const byLabel = new Map();
   for (const s of valid) { if (!byLabel.has(s.label)) byLabel.set(s.label, []); byLabel.get(s.label).push(s); }
@@ -93,27 +78,52 @@ export async function trainModel(samples, opt) {
     train.splice(0, train.length, ...train.filter((x) => !fuera.has(x)));
   }
   const trainAug = [...train];
-  for (let k = 1; k < aug; k++) for (const s of train) trainAug.push({ label: s.label, data: augment(s.data) });
+  const porClase = {};
+  train.forEach((s) => { (porClase[s.label] ||= []).push(s); });
+  const plan = planDeAumento(Object.fromEntries(Object.entries(porClase).map(([l, a]) => [l, a.length])), aug);
+  let sinteticas = 0;
+  for (const [l, extra] of Object.entries(plan)) {
+    const base = porClase[l];
+    for (let k = 0; k < extra; k++) { trainAug.push({ label: l, data: augment(base[k % base.length].data) }); sinteticas++; }
+  }
+  const pocas = Object.entries(porClase).filter(([, a]) => a.length < 10).map(([l, a]) => `${l} (${a.length})`);
+  if (pocas.length) onLog(`Aviso: menos de 10 muestras reales de entrenamiento en: ${pocas.join(', ')}. Las variantes sintéticas ayudan, pero no reemplazan grabar más.`);
+  if (sinteticas) onLog(`Aumento: +${sinteticas} variantes sintéticas (equilibrando las clases).`);
   trainAug.sort(() => Math.random() - 0.5);
   onLog(`Clases: ${labels.length} · entrenamiento: ${trainAug.length} (${train.length} reales) · validación: ${val.length}`);
 
-  const toTensors = (arr) => {
+  const toTensors = (arr, eps = 0) => {
     const flat = new Float32Array(arr.length * SAMPLE_SIZE);
     arr.forEach((s, i) => flat.set(s.data, i * SAMPLE_SIZE));
     const xs = tf.tensor3d(flat, [arr.length, SEQ_LEN, FEATURE_DIM]);
-    const ys = tf.oneHot(tf.tensor1d(arr.map((s) => labels.indexOf(s.label)), 'int32'), labels.length);
+    const idx = arr.map((s) => labels.indexOf(s.label));
+    const ys = tf.tidy(() => {
+      const oh = tf.cast(tf.oneHot(tf.tensor1d(idx, 'int32'), labels.length), 'float32');
+      return eps > 0 ? oh.mul(1 - eps).add(eps / labels.length) : oh;   // suavizado de etiquetas
+    });
     return { xs, ys };
   };
-  const tr = toTensors(trainAug), va = toTensors(val);
+  const tr = toTensors(trainAug, suavizado), va = toTensors(val);
   const model = buildModel(labels.length, arch);
   const handle = { stop: () => { model.stopTraining = true; } };
   opt.onHandle?.(handle);
 
+  // Se conservan los pesos de la época con MEJOR pérdida en validación (no los de la última época).
+  let mejor = null, mejorVal = Infinity, mejorEp = 0, sinMejora = 0;
   try {
     await model.fit(tr.xs, tr.ys, {
       epochs, batchSize: 32, shuffle: true, validationData: [va.xs, va.ys],
       callbacks: {
         onEpochEnd: async (ep, logs) => {
+          const vl = logs.val_loss;
+          if (Number.isFinite(vl) && vl < mejorVal - 1e-4) {
+            mejorVal = vl; mejorEp = ep + 1; sinMejora = 0;
+            mejor?.forEach((w) => w.dispose());
+            mejor = model.getWeights().map((w) => w.clone());
+          } else if (paciencia > 0 && ++sinMejora >= paciencia) {
+            model.stopTraining = true;
+            onLog(`Sin mejora en validación durante ${paciencia} épocas: se detiene el entrenamiento.`);
+          }
           onEpoch(ep + 1, epochs, {
             loss: logs.loss, acc: logs.acc ?? logs.accuracy,
             valLoss: logs.val_loss, valAcc: logs.val_acc ?? logs.val_accuracy,
@@ -122,21 +132,29 @@ export async function trainModel(samples, opt) {
         },
       },
     });
+    if (mejor) {
+      model.setWeights(mejor);
+      onLog(`Se conserva el modelo de la época ${mejorEp} (mejor pérdida en validación: ${mejorVal.toFixed(3)}).`);
+    }
 
-    // Precisión por seña en validación
+    // Precisión por seña, matriz de confusión y señas que se confunden (validación)
     const pred = tf.tidy(() => model.predict(va.xs).argMax(-1));
     const predArr = Array.from(await pred.data()); pred.dispose();
+    const reales = val.map((s) => labels.indexOf(s.label));
+    const matriz = matrizConfusion(reales, predArr, labels.length);
+    const pares = paresConfundidos(matriz, labels, 5);
     const perClass = labels.map((l, i) => {
       let n = 0, ok = 0;
       val.forEach((s, j) => { if (s.label === l) { n++; if (predArr[j] === i) ok++; } });
       return { label: l, n, acc: n ? ok / n : null };
     });
-    model.setUserDefinedMetadata({ labels, seqLen: SEQ_LEN, featureDim: FEATURE_DIM, arch, muestras: valid.length, fecha: new Date().toISOString() });
+    model.setUserDefinedMetadata({ labels, seqLen: SEQ_LEN, featureDim: FEATURE_DIM, arch, muestras: valid.length, mejorEpoca: mejorEp, fecha: new Date().toISOString() });
     await model.save(MODEL_IDB);
     localStorage.setItem(LS_LABELS, JSON.stringify(labels));
-    return { model, labels, perClass };
+    return { model, labels, perClass, matriz, pares, mejorEpoca: mejorEp };
   } finally {
     tr.xs.dispose(); tr.ys.dispose(); va.xs.dispose(); va.ys.dispose();
+    mejor?.forEach((w) => w.dispose());
   }
 }
 

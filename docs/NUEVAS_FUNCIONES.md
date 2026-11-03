@@ -29,6 +29,32 @@ usa la cámara. **No se guarda el video**, solo coordenadas.
 - Usa solo videos que tengas permiso de usar y cita la fuente en el informe. Verifica que la seña del video
   sea la que se usa en el SAE (el vocabulario administrativo, como «matrícula», puede no estar en diccionarios generales).
 
+## 1b. Aprender mejor: repeticiones, oraciones y aumento de datos
+
+### Video con la misma seña repetida
+En «Importar videos de señas» marca **«Este video repite la misma seña varias veces»**. El video se corta por el movimiento de las manos y cada repetición se guarda como una muestra aislada (hasta 3 ventanas por velocidad; se descartan los tramos muy cortos, que suelen ser ruido). Un solo video de 20 s con 5 repeticiones aporta mucho más que antes.
+
+### Video con una oración (varias señas)
+1. Graba una oración haciendo **una pausa de medio segundo** entre seña y seña (baja las manos o quédate quieto).
+2. En «Seña de estos videos» elige **«Oración: varias señas en orden»**.
+3. Escribe las señas en el orden en que aparecen: `hola, matrícula, cuándo` (también vale `hola matricula cuando`, con o sin tildes, y «por favor» se entiende como una sola seña).
+4. Elige el video. El sistema lo corta por movimiento y etiqueta cada tramo **en orden**.
+
+Si la cantidad de tramos detectados **no coincide** con la de señas escritas, **no se guarda nada** (para no enseñarle a la IA algo equivocado) y el registro dice cuántos tramos vio y en qué segundos. Ajusta entonces la **«pausa mínima entre señas»**: súbela si vio de más (una seña partida en dos), bájala si vio de menos (dos señas pegadas).
+
+Cada seña de la oración se guarda **aislada** (con su propio recorte), porque el modelo reconoce señas sueltas de unos 2 s. Los tramos del mismo video comparten el mismo identificador de fuente, así que en la validación siguen contando como un solo video.
+
+### Aumento de datos mejorado (Entrenamiento)
+El factor **×N** ahora **equilibra** las clases: las señas con pocas muestras se refuerzan con variantes realistas hasta N veces la mediana, y las que ya tienen muchas no se tocan (así «reposo» no domina). Las variantes cambian: velocidad (más lenta o rápida), ladeo de la cámara, distancia, proporciones del cuerpo, desplazamiento, error constante del detector, ruido por fotograma, espejo (personas zurdas) y pérdida breve de una mano. **Una mano que no existe nunca se inventa.** Se aplica solo al entrenamiento, nunca a la validación (así la precisión no se infla).
+
+Dos límites importantes: (1) las variantes son parientes de la muestra original, no personas nuevas; no reemplazan grabar a más señantes; (2) con menos de 10 muestras reales de una seña el registro muestra un aviso.
+
+### Otras mejoras del entrenamiento
+- Se **conserva el modelo de la mejor época** (menor pérdida en validación) en vez del de la última.
+- **Parada anticipada**: si la validación no mejora en N épocas (por defecto 12) se detiene.
+- **Suavizado de etiquetas** (0,05): evita que el modelo se vuelva «demasiado seguro» con pocos datos.
+- Al terminar se muestran **«Señas que más se confunden»** (ej. «Matrícula se confundió con Pensión, 3 veces»): indican qué señas conviene volver a grabar.
+
 ## 2. Subtítulos y voz (index.html)
 
 - Cada seña detectada se suma a la frase en curso (línea de señas en mayúsculas) y se muestra una oración provisional.
@@ -58,3 +84,7 @@ Ejemplos: `cuánto + matrícula` → «¿Cuánto cuesta la matrícula?» · `ayu
 - Las palabras interrogativas no tienen botón táctil (solo se detectan con la cámara).
 - La importación de videos usa el detector en modo imagen; la cámara usa modo video (con seguimiento). Las
   diferencias son pequeñas, pero conviene validar con la cámara real.
+
+### Qué no resuelve todavía este paso
+- Sigue reconociendo **señas sueltas** de ~2 s; las oraciones se forman uniendo señas reconocidas con las reglas de `data/frases.json`. Entre una seña y la siguiente hay que dejar pasar unos 2 segundos.
+- Reconocer oraciones **fluidas** (sin pausas) requiere un modelo continuo y muchos más datos; es una etapa posterior.

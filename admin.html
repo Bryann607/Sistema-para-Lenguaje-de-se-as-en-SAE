@@ -141,6 +141,16 @@
           <input id="vidSigner" type="text" value="V01" maxlength="12" autocomplete="off">
         </label>
       </div>
+      <div class="form" id="vidFraseWrap" hidden>
+        <label>Señas en el orden en que aparecen
+          <input id="vidSecuencia" type="text" placeholder="hola, matrícula, cuándo" autocomplete="off">
+        </label>
+        <label>Pausa mínima entre señas (s)
+          <input id="vidPausa" type="number" min="0.1" max="2" step="0.1" value="0.4">
+        </label>
+      </div>
+      <p class="ayuda" id="vidFraseAyuda" hidden>Video de una oración: graba cada seña y haz una pausa de medio segundo (baja las manos o quédate quieto) entre una y otra. Se corta solo por el movimiento y cada tramo se guarda con la seña indicada, en orden. Si la cantidad de tramos no coincide con la de señas, <strong>no se guarda nada</strong> para no etiquetar mal.</p>
+      <label class="check" id="vidRepiteWrap"><input type="checkbox" id="vidRepite"> Este video repite la misma seña varias veces (cortar cada repetición)</label>
       <label class="check"><input type="checkbox" id="vidEspejo" checked> Añadir versión en espejo (reconoce también a personas zurdas)</label>
       <label class="check"><input type="checkbox" id="vidReposo" checked> Usar los tramos sin manos del video como «Reposo»</label>
       <div class="acciones">
@@ -177,10 +187,12 @@
         </label>
         <label>Épocas <input id="optEpocas" type="number" min="5" max="300" value="40"></label>
         <label>Aumento de datos
-          <select id="optAug"><option value="1">Ninguno</option><option value="2" selected>×2</option><option value="3">×3</option></select>
+          <select id="optAug"><option value="1">Ninguno</option><option value="2" selected>×2</option><option value="3">×3</option><option value="4">×4</option><option value="6">×6</option></select>
         </label>
         <label>Mínimo de muestras por seña <input id="optMin" type="number" min="3" max="100" value="6"></label>
+        <label>Parar si no mejora (épocas) <input id="optPaciencia" type="number" min="0" max="100" value="12"></label>
       </div>
+      <p class="ayuda">El aumento ×N equilibra las señas: las que tienen pocas muestras se refuerzan con variantes realistas (más lento o rápido, ladeado, más cerca o lejos, espejo, ruido del detector) hasta N veces la mediana. Se aplica solo al entrenamiento, nunca a la validación. Al terminar se conserva el modelo de la mejor época.</p>
       <label class="check"><input type="checkbox" id="optRepo" checked> Incluir datasets de la carpeta <code>data/dataset</code> del repositorio</label>
       <label class="check"><input type="checkbox" id="optNube" checked> Incluir datasets de la nube (Supabase; requiere haber iniciado sesión en Datos)</label>
       <div class="acciones">
@@ -196,6 +208,8 @@
       <h2>Resultado</h2>
       <p id="resGlobal"></p>
       <table class="tabla"><thead><tr><th>Seña</th><th>Muestras de validación</th><th>Acierto</th></tr></thead><tbody id="resTabla"></tbody></table>
+      <h3 class="subtitulo">Señas que más se confunden</h3>
+      <ul class="confusion" id="resConfusion"></ul>
       <div class="acciones sep">
         <button class="btn" id="btnDescargar">Descargar modelo para el repositorio</button>
         <button class="btn btn-sec" id="btnPublicar" type="button">Publicar modelo en la nube</button>

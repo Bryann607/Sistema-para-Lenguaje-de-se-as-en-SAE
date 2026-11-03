@@ -208,3 +208,9 @@ body[data-vista="entrenar"] .stage-col { display: none; }
 .sub-ctrl .slider { margin-top: 0; flex: 1 1 260px; }
 
 .lista-nube { margin: .75rem 0 0; padding-left: 1.1rem; font-size: .9rem; color: var(--suave); max-height: 10rem; overflow: auto; }
+
+/* ---------- resultados: señas que se confunden ---------- */
+.subtitulo { font-size: 1rem; margin: 1.1rem 0 .4rem; color: var(--suave); font-weight: 700; }
+.confusion { margin: 0; padding-left: 1.2rem; }
+.confusion li { margin-bottom: .2rem; }
+.confusion li.vacio { list-style: none; margin-left: -1.2rem; color: var(--suave); }

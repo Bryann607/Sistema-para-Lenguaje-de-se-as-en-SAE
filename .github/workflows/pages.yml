@@ -28,14 +28,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Armar el sitio público (sin administración)
-        run: |
-          mkdir -p _site/js _site/data
-          cp index.html _site/
-          cp -r css assets model _site/
-          [ -d audio ] && cp -r audio _site/ || true
-          cp data/vocabulario.json data/respuestas.json _site/data/
-          cp js/config.js js/features.js js/vision.js js/model.js js/app.js js/main.js js/traductor.js _site/js/
-          find _site -type f | sort
+        run: python3 tools/armar_sitio.py
 
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

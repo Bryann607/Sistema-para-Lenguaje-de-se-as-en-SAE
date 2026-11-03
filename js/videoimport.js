@@ -7,10 +7,10 @@
 //   · construirMuestras() → lógica pura (sin navegador): recorta la seña, varía la velocidad,
 //                           genera ventanas de 30 fotogramas y la versión en espejo.
 
-import { MP_MODULE, MP_WASM, POSE_MODEL, HAND_MODEL, SEQ_LEN, SAMPLE_MS, REPOSO } from './config.js';
+import { MP_MODULE, MP_WASM, POSE_MODEL, HAND_MODEL, SEQ_LEN, SAMPLE_MS, REPOSO, FEATURE_DIM, LEFT_OFFSET } from './config.js';
 import { extractFeatures, flattenSequence, espejarFrame } from './features.js';
 
-const MAX_SEGUNDOS = 20;           // se ignora lo que pase de los 20 s de cada video
+const MAX_SEGUNDOS = 40;           // se ignora lo que pase de los 40 s de cada video (oraciones largas)
 
 // ---------------------------------------------------------------------------
 // Parte 1 · extracción de puntos desde un archivo de video
@@ -130,7 +130,7 @@ function repartir(lo, hi, max) {
  * @returns {{muestras: Array, avisos: string[]}}
  */
 export function construirMuestras(frames, manos, op) {
-  const { label, signer, grupo, espejo = true, usarReposo = true, velocidades = [0.8, 1, 1.25], ventanasPorVelocidad = 4 } = op;
+  const { label, signer, grupo, espejo = true, usarReposo = true, velocidades = [0.8, 1, 1.25], ventanasPorVelocidad = 4, repeticiones = false, hueco = 6 } = op;
   const avisos = [];
   const salida = [];
   let ts = Date.now();
@@ -148,6 +148,24 @@ export function construirMuestras(frames, manos, op) {
     starts.forEach((s) => agregar(ventana(frames, s), REPOSO));
     if (!salida.length) avisos.push('No se pudo generar ninguna ventana.');
     return { muestras: salida, avisos };
+  }
+
+  // ---- Seña repetida varias veces en el mismo video: cada repetición se corta y se usa aislada ----
+  if (repeticiones) {
+    const rep = segmentarRepeticiones(frames, manos, { hueco });
+    if (rep.length) {
+      avisos.push(`Se detectaron ${rep.length} repetición(es) de la seña en el video.`);
+      const ventanasPor = rep.length > 3 ? 2 : Math.min(3, ventanasPorVelocidad);
+      for (const [a, b] of rep) {
+        const r = ventanasDeSegmento(frames.slice(a, b + 1), velocidades, ventanasPor);
+        if (r.aviso) avisos.push(r.aviso);
+        r.ventanas.forEach((w) => agregar(w, label));
+      }
+      if (usarReposo) agregarReposoGratis(frames, manos, (w) => agregar(w, REPOSO));
+      if (!salida.length) avisos.push('No se pudo generar ninguna muestra.');
+      return { muestras: salida, avisos };
+    }
+    avisos.push('No se pudieron separar repeticiones; se usa el tramo más largo con manos.');
   }
 
   // ---- Seña ----
@@ -184,6 +202,182 @@ export function construirMuestras(frames, manos, op) {
   }
   if (!salida.length) avisos.push('No se pudo generar ninguna muestra.');
   return { muestras: salida, avisos };
+}
+
+// ---------------------------------------------------------------------------
+// Parte 3 · varios tramos por video: repeticiones y oraciones (lógica pura)
+// ---------------------------------------------------------------------------
+
+/** Velocidad media de los puntos de las manos entre fotogramas consecutivos (unidades = ancho de hombros). */
+export function movimientoManos(frames) {
+  const v = new Array(frames.length).fill(0);
+  for (let i = 1; i < frames.length; i++) {
+    let suma = 0, n = 0;
+    for (let p = LEFT_OFFSET; p < FEATURE_DIM; p += 3) {
+      const a = frames[i - 1], b = frames[i];
+      const ausA = a[p] === 0 && a[p + 1] === 0 && a[p + 2] === 0;
+      const ausB = b[p] === 0 && b[p + 1] === 0 && b[p + 2] === 0;
+      if (ausA || ausB) continue;
+      suma += Math.abs(b[p] - a[p]) + Math.abs(b[p + 1] - a[p + 1]); n++;
+    }
+    v[i] = n ? suma / n : 0;
+  }
+  return v;
+}
+
+const suavizar = (v, k = 3) => v.map((_, i) => {
+  let s = 0, n = 0;
+  for (let j = Math.max(0, i - Math.floor(k / 2)); j <= Math.min(v.length - 1, i + Math.floor(k / 2)); j++) { s += v[j]; n++; }
+  return s / n;
+});
+
+/**
+ * Corta el video en tramos de movimiento de las manos (cada seña = un tramo).
+ * Un tramo termina cuando las manos se detienen o desaparecen por más de `hueco` fotogramas (≈ 0,4 s con 6).
+ * El umbral se ajusta solo a cada video: max(0,05; 20 % del movimiento típico de los fotogramas rápidos).
+ * @returns {{tramos: Array<[number, number]>, umbral: number}}
+ */
+export function segmentarPorMovimiento(frames, manos, { hueco = 6, minLargo = 5, margen = 2, umbral } = {}) {
+  const v = suavizar(movimientoManos(frames), 3);
+  const conManos = v.filter((_, i) => manos[i]).sort((a, b) => a - b);
+  if (conManos.length < minLargo) return { tramos: [], umbral: 0 };
+  const p90 = conManos[Math.floor(0.9 * (conManos.length - 1))];
+  const th = umbral ?? Math.max(0.05, 0.2 * p90);
+  const activo = v.map((x, i) => !!manos[i] && x > th);
+
+  const runs = [];
+  let ini = -1, ult = -1;
+  activo.forEach((a, i) => {
+    if (!a) return;
+    if (ini < 0) { ini = i; ult = i; }
+    else if (i - ult - 1 <= hueco) ult = i;
+    else { runs.push([ini, ult]); ini = i; ult = i; }
+  });
+  if (ini >= 0) runs.push([ini, ult]);
+
+  const largos = runs.filter(([a, b]) => b - a + 1 >= minLargo);
+  const tramos = largos.map(([a, b], k) => {
+    const prev = k > 0 ? largos[k - 1][1] : -1, sig = k < largos.length - 1 ? largos[k + 1][0] : frames.length;
+    const lim = (d) => Math.floor(d / 2);                      // los márgenes no invaden al vecino
+    return [Math.max(a - margen, prev + 1 + (k > 0 ? lim(a - prev - 1) : 0)), Math.min(b + margen, sig - 1 - (k < largos.length - 1 ? lim(sig - b - 1) : 0))];
+  });
+  return { tramos, umbral: th };
+}
+
+/** Repeticiones de una misma seña: tramos de movimiento, descartando los demasiado cortos frente a la mediana. */
+export function segmentarRepeticiones(frames, manos, op = {}) {
+  const { tramos } = segmentarPorMovimiento(frames, manos, op);
+  if (tramos.length < 2) return tramos;
+  const largos = tramos.map(([a, b]) => b - a + 1).sort((x, y) => x - y);
+  const mediana = largos[Math.floor((largos.length - 1) / 2)];
+  return tramos.filter(([a, b]) => b - a + 1 >= 0.6 * mediana);
+}
+
+/** Ajusta velocidades para que el tramo entre en SEQ_LEN fotogramas y devuelve las ventanas del tramo aislado. */
+function ventanasDeSegmento(seg, velocidades, ventanasPorVel) {
+  let vels = velocidades, aviso = null;
+  if (seg.length > SEQ_LEN - 2) {
+    const minVel = seg.length / (SEQ_LEN - 2);
+    aviso = `Una seña dura ${(seg.length * SAMPLE_MS / 1000).toFixed(1)} s (más de 2 s): se acelera para que entre en una ventana.`;
+    vels = [...new Set(vels.map((x) => Math.max(x, minVel)).map((x) => Math.round(x * 100) / 100))];
+  }
+  const ventanas = [];
+  for (const vel of vels) {
+    const seq = remuestrear(seg, vel);
+    repartir(seq.length - SEQ_LEN, 0, ventanasPorVel).forEach((s) => ventanas.push(ventana(seq, s)));
+  }
+  return { ventanas, aviso };
+}
+
+/** Tramos de 2 s sin ninguna mano: se guardan como «Reposo» (hasta 3 por video). */
+function agregarReposoGratis(frames, manos, agregarVentana) {
+  let racha = 0, ini = 0, cuantos = 0;
+  for (let i = 0; i <= manos.length && cuantos < 3; i++) {
+    if (i < manos.length && !manos[i]) { if (racha === 0) ini = i; racha++; }
+    else {
+      if (racha >= SEQ_LEN) { agregarVentana(frames.slice(ini, ini + SEQ_LEN)); cuantos++; }
+      racha = 0;
+    }
+  }
+}
+
+/**
+ * Video con una ORACIÓN: varias señas seguidas. Se corta por movimiento y cada tramo se etiqueta, EN ORDEN,
+ * con la secuencia indicada. Si la cantidad de tramos no coincide con la de señas NO se guarda nada
+ * (para no etiquetar mal): se informa cuántos tramos se vieron y en qué segundos.
+ * Recomendación al grabar: baja las manos o haz una pausa de ~0,5 s entre seña y seña.
+ * @param {string[]} secuencia ids de las señas en el orden en que aparecen en el video
+ * @returns {{muestras: Array, avisos: string[], tramos: Array<[number, number]>}}
+ */
+export function construirMuestrasFrase(frames, manos, secuencia, op) {
+  const { signer, grupo, espejo = true, usarReposo = true, velocidades = [0.8, 1, 1.25], ventanasPorVelocidad = 3, hueco = 6, umbral } = op;
+  const avisos = [], salida = [];
+  if (frames.length < 10) return { muestras: [], avisos: ['El video es demasiado corto.'], tramos: [] };
+  const { tramos, umbral: th } = segmentarPorMovimiento(frames, manos, { hueco, umbral });
+  const seg = (t) => `${((t[0] * SAMPLE_MS) / 1000).toFixed(1)}–${((t[1] * SAMPLE_MS) / 1000).toFixed(1)} s`;
+  if (tramos.length !== secuencia.length) {
+    avisos.push(`Se detectaron ${tramos.length} tramos con movimiento pero indicaste ${secuencia.length} señas (${secuencia.join(' → ')}). `
+      + `No se guardó nada para no etiquetar mal.${tramos.length ? ` Tramos vistos: ${tramos.map(seg).join(' · ')}.` : ''} `
+      + (tramos.length > secuencia.length ? 'Sube la «pausa mínima» o haz pausas más claras entre señas.' : 'Baja la «pausa mínima» o separa más las señas.'));
+    return { muestras: [], avisos, tramos };
+  }
+  let ts = Date.now();
+  const agregarVentana = (w, etiqueta) => {
+    const base = { label: etiqueta, signer, grupo, fuente: 'video-frase' };
+    salida.push({ ...base, ts: ts++, data: flattenSequence(w) });
+    if (espejo) salida.push({ ...base, ts: ts++, data: flattenSequence(w.map(espejarFrame)) });
+  };
+  tramos.forEach((t, i) => {
+    const r = ventanasDeSegmento(frames.slice(t[0], t[1] + 1), velocidades, ventanasPorVelocidad);
+    if (r.aviso) avisos.push(`${secuencia[i]}: ${r.aviso}`);
+    r.ventanas.forEach((w) => agregarVentana(w, secuencia[i]));
+  });
+  if (usarReposo) agregarReposoGratis(frames, manos, (w) => agregarVentana(w, REPOSO));
+  avisos.push(`Tramos: ${tramos.map((t, i) => `${secuencia[i]} ${seg(t)}`).join(' · ')} (umbral de movimiento ${th.toFixed(3)}).`);
+  return { muestras: salida, avisos, tramos };
+}
+
+/**
+ * Convierte «hola, matrícula, cuándo» (o «hola matricula cuando») en ids del vocabulario.
+ * Acepta ids o nombres, con o sin tildes; separadores: coma, punto y coma, +, >, | o salto de línea.
+ * Sin esos separadores, une palabras sueltas cuando forman una seña («por favor» → por_favor).
+ * @returns {{ids: string[], desconocidas: string[]}}
+ */
+export function senasDesdeTexto(texto, vocab) {
+  const norm = (t) => t.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '');
+  const mapa = new Map();
+  vocab.senas.forEach((s) => { mapa.set(s.id, s.id); mapa.set(norm(s.nombre), s.id); });
+  const ids = [], desconocidas = [];
+  if (/[,;+>|\n]/.test(texto)) {
+    for (const parte of texto.split(/[,;+>|\n]+/)) {
+      const k = norm(parte); if (!k) continue;
+      if (mapa.has(k)) ids.push(mapa.get(k)); else desconocidas.push(parte.trim());
+    }
+  } else {
+    const tokens = texto.trim().split(/\s+/).map(norm).filter(Boolean);
+    for (let i = 0; i < tokens.length;) {
+      let hallado = false;
+      for (let len = Math.min(3, tokens.length - i); len >= 1; len--) {
+        const k = tokens.slice(i, i + len).join('_');
+        if (mapa.has(k)) { ids.push(mapa.get(k)); i += len; hallado = true; break; }
+      }
+      if (!hallado) { desconocidas.push(tokens[i]); i++; }
+    }
+  }
+  return { ids, desconocidas };
+}
+
+/** Resumen de calidad de un video leído (para avisar antes de entrenar con datos pobres). */
+export function resumenCalidad(frames, manos, conCuerpo) {
+  const n = frames.length || 1;
+  const manosPct = manos.filter(Boolean).length / n;
+  const mov = movimientoManos(frames).filter((_, i) => manos[i]).sort((a, b) => a - b);
+  const movP90 = mov.length ? mov[Math.floor(0.9 * (mov.length - 1))] : 0;
+  const avisos = [];
+  if (conCuerpo < 0.5) avisos.push(`solo en ${(conCuerpo * 100).toFixed(0)} % de los fotogramas se vieron los hombros; el resultado puede ser pobre.`);
+  if (manosPct < 0.15) avisos.push(`las manos se ven solo en ${(manosPct * 100).toFixed(0)} % del video.`);
+  else if (movP90 < 0.05) avisos.push('casi no hay movimiento de manos: si la seña es en movimiento, revisa el video.');
+  return { manosPct, movP90, avisos };
 }
 
 /** Deduce la seña a partir del nombre del archivo: «matricula_01.mp4» → matricula. */

@@ -58,6 +58,7 @@ export function initEntrenar(app) {
         epochs: Number($('#optEpocas').value) || 40,
         augment: Number($('#optAug').value) || 1,
         minPerClass: Number($('#optMin').value) || 6,
+        paciencia: Math.max(0, Number($('#optPaciencia').value) || 0),
         onLog: addLog,
         onHandle: (h) => { handle = h; },
         onEpoch: (e, total, l) => {
@@ -83,6 +84,15 @@ export function initEntrenar(app) {
         });
         tb.appendChild(tr);
       });
+      const ul = $('#resConfusion'); ul.replaceChildren();
+      const pares = out.pares || [];
+      if (!pares.length) { const li = document.createElement('li'); li.className = 'vacio'; li.textContent = 'Ninguna confusión en la validación.'; ul.appendChild(li); }
+      pares.forEach((p) => {
+        const li = document.createElement('li');
+        li.textContent = `${app.nombreDe(p.real)} se confundió con ${app.nombreDe(p.predicho)} (${p.n} ${p.n === 1 ? 'vez' : 'veces'})`;
+        ul.appendChild(li);
+      });
+      if (out.mejorEpoca) $('#resGlobal').textContent += ` Se conservó la época ${out.mejorEpoca}.`;
       $('#resultados').hidden = false;
       setMsg('Entrenamiento terminado.', 'ok');
     } catch (e) {

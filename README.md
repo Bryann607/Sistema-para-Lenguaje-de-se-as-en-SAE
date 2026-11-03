@@ -41,6 +41,8 @@ En Windows: `iniciar.bat` abre el módulo de usuario y `administrador.bat` abre 
 
 El sitio publicado en GitHub Pages **solo incluye el módulo de usuario**; `admin.html`, la grabación y el entrenamiento no se publican.
 
+- **Cómo funciona el sistema y qué no romper al cambiarlo:** [`docs/COMO_FUNCIONA.md`](docs/COMO_FUNCIONA.md). Pruebas: `node --test`.
+
 ## Estructura
 
 ```
