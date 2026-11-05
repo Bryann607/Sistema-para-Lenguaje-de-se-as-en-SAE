@@ -7,9 +7,20 @@
     "carrera": "la carrera", "ciclo": "el ciclo", "curso": "el curso", "examen": "el examen",
     "notas": "las notas", "horario": "el horario", "cronograma": "el cronograma",
     "sae": "el SAE", "caja": "la caja", "biblioteca": "la biblioteca", "psicologia": "el área de psicología",
+    "reserva": "la reserva de matrícula", "convalidacion": "la convalidación", "justificacion": "la justificación de inasistencias",
+    "reclamo": "el reclamo", "titulo": "el grado y título", "revision": "la revisión de evaluaciones",
+    "contrasena": "la contraseña", "wifi": "el wifi", "plataforma": "la plataforma del SAE",
     "secretaria": "la secretaría", "telefono": "el teléfono", "correo": "el correo"
   },
-  "inicio": { "hola": "Hola.", "si": "Sí.", "no": "No." },
+  "inicio": { "hola": "Hola.", "buenos_dias": "Buenos días.", "buenas_tardes": "Buenas tardes.", "perdon": "Disculpa.", "si": "Sí.", "no": "No." },
+  "contexto": {
+    "yo": { "solo": "Yo.", "junto": "" },
+    "estudiante": { "solo": "Soy estudiante." },
+    "problema": { "solo": "Tengo un problema.", "con_tema": "Tengo un problema con {tema}." },
+    "repetir": { "solo": "¿Puedes repetir, por favor?" },
+    "no_entiendo": { "solo": "No entiendo." },
+    "esperar": { "solo": "Espero un momento." }
+  },
   "final": { "por_favor": "Por favor.", "gracias": "Gracias.", "adios": "Adiós." },
   "ayuda": { "solo": "Necesito ayuda.", "con_tema": "Necesito ayuda con {tema}." },
   "preguntas": {
@@ -22,6 +33,8 @@
   },
   "sinPregunta": "Necesito información sobre {tema}.",
   "plantillas": [
+    { "senas": ["yo", "estudiante"], "texto": "Soy estudiante." },
+    { "senas": ["yo", "problema"], "texto": "Tengo un problema." },
     { "senas": ["cuando", "pension"], "texto": "¿Cuándo vence la pensión?" },
     { "senas": ["cuando", "matricula"], "texto": "¿Cuándo es la matrícula?" },
     { "senas": ["cuanto", "pension"], "texto": "¿Cuánto es la pensión?" },

@@ -12,6 +12,7 @@ import { augment, cambiarVelocidad, espejarSecuencia, planDeAumento, SAMPLE_SIZE
 import { matrizConfusion, paresConfundidos, metricasPorClase } from '../js/evaluacion.js';
 import { segmentarPorMovimiento, segmentarRepeticiones, construirMuestras, construirMuestrasFrase, senasDesdeTexto } from '../js/videoimport.js';
 import { componerFrase } from '../js/frases.js';
+import { interpretarConsulta } from '../js/intencion.js';
 import { exportDataset, parseDataset } from '../js/dataset.js';
 
 const leer = (r) => JSON.parse(readFileSync(new URL(`../${r}`, import.meta.url), 'utf8'));
@@ -131,6 +132,62 @@ test('oraciones: reglas de data/frases.json', () => {
   assert.equal(c(['hola', 'matricula', 'cuando', 'gracias']), 'Hola. ¿Cuándo es la matrícula? Gracias.');
   assert.equal(c(['matricula', 'matricula']), 'Necesito información sobre la matrícula.');
   assert.equal(c(['xyz']), '');
+});
+
+// ---------- intención de la oración completa ----------
+test('intención: la información se decide con toda la oración, no con la última seña', () => {
+  const q = (ids) => interpretarConsulta(ids, vocab, reglas);
+  // caso reportado: «hola matrícula por favor» debe responder sobre la matrícula, no sobre «por favor»
+  let r = q(['hola', 'matricula', 'por_favor']);
+  assert.equal(r.tipo, 'tema'); assert.equal(r.principal, 'matricula'); assert.deepEqual(r.otros, []);
+  // una sola seña sigue respondiendo directo
+  assert.equal(q(['matricula']).principal, 'matricula');
+  // pregunta + tema: el tema manda y se conoce la pregunta (para resaltar el dato)
+  r = q(['hola', 'cuando', 'matricula', 'gracias']);
+  assert.equal(r.principal, 'matricula'); assert.equal(r.pregunta, 'cuando');
+  // el orden de las señas no cambia el tema
+  assert.equal(q(['por_favor', 'matricula']).principal, 'matricula');
+  assert.equal(q(['matricula', 'cuando']).pregunta, 'cuando');
+  // varios temas: el primero es el principal y los demás quedan disponibles
+  r = q(['hola', 'matricula', 'pension', 'matricula']);
+  assert.equal(r.principal, 'matricula'); assert.deepEqual(r.otros, ['pension']);
+  // ayuda + tema responde el tema; ayuda sola responde ayuda
+  assert.equal(q(['ayuda', 'constancia']).principal, 'constancia');
+  assert.equal(q(['ayuda']).tipo, 'ayuda');
+  // solo cortesía: saludo manda sobre despedida
+  assert.deepEqual([q(['hola']).tipo, q(['hola']).principal], ['cortesia', 'hola']);
+  assert.equal(q(['hola', 'por_favor']).principal, 'hola');
+  assert.equal(q(['gracias']).principal, 'gracias');
+  assert.equal(q(['gracias', 'adios']).principal, 'adios');
+  // solo pregunta; sin señas conocidas
+  assert.deepEqual([q(['cuando']).tipo, q(['cuando']).principal], ['pregunta', 'cuando']);
+  assert.equal(q(['xyz']).tipo, 'vacio'); assert.equal(q([]).principal, null);
+  // toda seña del vocabulario produce un principal con respuesta
+  for (const s of vocab.senas) assert.ok(respuestas[q([s.id]).principal], `sin respuesta para ${s.id}`);
+});
+
+test('oraciones: palabras de contexto y saludos nuevos', () => {
+  const c = (ids) => componerFrase(ids, vocab, reglas);
+  assert.equal(c(['buenos_dias', 'matricula']), 'Buenos días. Necesito información sobre la matrícula.');
+  assert.equal(c(['yo', 'estudiante', 'matricula']), 'Soy estudiante. Necesito información sobre la matrícula.');
+  assert.equal(c(['problema', 'wifi']), 'Tengo un problema con el wifi.');
+  assert.equal(c(['hola', 'yo', 'contrasena', 'por_favor']), 'Hola. Necesito información sobre la contraseña. Por favor.');
+  assert.equal(c(['no_entiendo']), 'No entiendo.');
+  assert.equal(c(['yo']), 'Yo.');
+});
+test('intención: las palabras de contexto no se confunden con el tema', () => {
+  const q = (ids) => interpretarConsulta(ids, vocab, reglas);
+  assert.equal(q(['hola', 'yo', 'estudiante', 'reclamo']).principal, 'reclamo');
+  assert.equal(q(['problema', 'wifi']).principal, 'wifi');
+  assert.equal(q(['yo', 'estudiante']).principal, 'estudiante');
+  assert.equal(q(['buenas_tardes']).tipo, 'cortesia');
+});
+test('contenido: la información del SAE incluye contacto oficial y todo tema nuevo tiene su respuesta', () => {
+  for (const s of vocab.senas) {
+    const e = respuestas[s.id];
+    assert.ok(e?.titulo && e?.resumen, `falta titulo/resumen en ${s.id}`);
+    if (['tramites', 'academico', 'cuentas', 'lugares'].includes(s.categoria)) assert.match(e.contacto || '', /helpdesk@upsjb\.edu\.pe/, `sin contacto del SAE en ${s.id}`);
+  }
 });
 
 // ---------- datasets ----------

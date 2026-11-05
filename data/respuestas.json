@@ -1,43 +1,40 @@
 {
-  "_ayuda": "Contenido de EJEMPLO. Cada clave es el id de una seña en vocabulario.json. Reemplaza los textos con información oficial y cambia verificado a true para quitar el aviso de 'pendiente de validar'.",
+  "_ayuda": "Información orientada a lo que hace el SAE (Servicio de Atención al Estudiante): informar, orientar y atender consultas y trámites. Los contactos (correo, teléfono, WhatsApp) y la plataforma sae.upsjb.edu.pe provienen de las guías oficiales de la UPSJB 2026. Los pasos son generales: reemplázalos por los procedimientos, costos y plazos oficiales y cambia verificado a true para quitar el aviso de 'pendiente de validar'. Campos opcionales por tema: lugar, horario, contacto y por_pregunta (respuesta puntual a cuando/donde/cuanto/como/quien/que).",
   "matricula": {
     "titulo": "Matrícula",
-    "resumen": "Proceso para inscribirte en los cursos de tu ciclo.",
+    "resumen": "El SAE te orienta para inscribirte en los cursos de tu ciclo.",
     "verificado": false,
     "pasos": [
-      "Revisa que no tengas deudas pendientes.",
-      "Elige tus cursos en el sistema académico.",
-      "Confirma tu matrícula con tu pago al día."
+      "Busca el procedimiento vigente en la plataforma del SAE (sae.upsjb.edu.pe).",
+      "Revisa el calendario académico para conocer las fechas.",
+      "Revisa tu correo institucional (Microsoft 365): ahí llegan los avisos oficiales."
     ],
-    "lugar": "SAE · Completar con datos oficiales del SAE",
-    "horario": "Completar con datos oficiales del SAE",
-    "contacto": "Completar con datos oficiales del SAE"
+    "lugar": "Plataforma del SAE (sae.upsjb.edu.pe) o atención del SAE",
+    "contacto": "Correo: helpdesk@upsjb.edu.pe · Teléfono: (01) 644 9131 (opción 2) · WhatsApp: (51) 948 780 735"
   },
   "pension": {
     "titulo": "Pensión",
-    "resumen": "Pago mensual de estudios.",
+    "resumen": "El SAE resuelve tus dudas sobre el pago de tus estudios.",
     "verificado": false,
     "pasos": [
-      "Consulta el monto y la fecha de vencimiento.",
-      "Paga en caja o por los canales autorizados.",
-      "Guarda tu comprobante."
+      "Consulta tu situación de pagos y fechas de vencimiento.",
+      "Busca el procedimiento vigente en la plataforma del SAE (sae.upsjb.edu.pe).",
+      "Si necesitas más ayuda, escribe o llama al SAE."
     ],
-    "lugar": "SAE · Completar con datos oficiales del SAE",
-    "horario": "Completar con datos oficiales del SAE",
-    "contacto": "Completar con datos oficiales del SAE"
+    "lugar": "Plataforma del SAE (sae.upsjb.edu.pe) o atención del SAE",
+    "contacto": "Correo: helpdesk@upsjb.edu.pe · Teléfono: (01) 644 9131 (opción 2) · WhatsApp: (51) 948 780 735"
   },
   "pago": {
     "titulo": "Pagos",
-    "resumen": "Dónde y cómo realizar pagos a la universidad.",
+    "resumen": "El SAE te indica cómo y dónde pagar tus conceptos.",
     "verificado": false,
     "pasos": [
-      "Consulta el concepto de pago.",
-      "Paga en los canales autorizados.",
-      "Guarda tu comprobante."
+      "Pregunta por el concepto de pago que necesitas.",
+      "Busca el procedimiento vigente en la plataforma del SAE (sae.upsjb.edu.pe).",
+      "Guarda siempre tu comprobante."
     ],
-    "lugar": "SAE · Completar con datos oficiales del SAE",
-    "horario": "Completar con datos oficiales del SAE",
-    "contacto": "Completar con datos oficiales del SAE"
+    "lugar": "Plataforma del SAE (sae.upsjb.edu.pe) o atención del SAE",
+    "contacto": "Correo: helpdesk@upsjb.edu.pe · Teléfono: (01) 644 9131 (opción 2) · WhatsApp: (51) 948 780 735"
   },
   "constancia": {
     "titulo": "Constancias",
@@ -45,90 +42,83 @@
     "verificado": false,
     "pasos": [
       "Indica qué constancia necesitas.",
-      "Presenta tu DNI y código de estudiante.",
-      "Consulta el plazo de entrega."
+      "Busca el procedimiento vigente en la plataforma del SAE (sae.upsjb.edu.pe).",
+      "Revisa tu correo institucional (Microsoft 365): ahí llegan los avisos oficiales."
     ],
-    "lugar": "SAE · Completar con datos oficiales del SAE",
-    "horario": "Completar con datos oficiales del SAE",
-    "contacto": "Completar con datos oficiales del SAE"
+    "lugar": "Plataforma del SAE (sae.upsjb.edu.pe) o atención del SAE",
+    "contacto": "Correo: helpdesk@upsjb.edu.pe · Teléfono: (01) 644 9131 (opción 2) · WhatsApp: (51) 948 780 735"
   },
   "certificado": {
     "titulo": "Certificados",
-    "resumen": "Certificados de estudios y notas.",
+    "resumen": "Certificados de estudios y de notas.",
     "verificado": false,
     "pasos": [
-      "Indica el tipo de certificado.",
-      "Presenta tu DNI y código de estudiante.",
-      "Consulta el costo y plazo de entrega."
+      "Indica qué certificado necesitas.",
+      "Busca el procedimiento vigente en la plataforma del SAE (sae.upsjb.edu.pe).",
+      "Revisa tu correo institucional (Microsoft 365): ahí llegan los avisos oficiales."
     ],
-    "lugar": "SAE · Completar con datos oficiales del SAE",
-    "horario": "Completar con datos oficiales del SAE",
-    "contacto": "Completar con datos oficiales del SAE"
+    "lugar": "Plataforma del SAE (sae.upsjb.edu.pe) o atención del SAE",
+    "contacto": "Correo: helpdesk@upsjb.edu.pe · Teléfono: (01) 644 9131 (opción 2) · WhatsApp: (51) 948 780 735"
   },
   "carne": {
     "titulo": "Carné universitario",
     "resumen": "Identificación como estudiante de la universidad.",
     "verificado": false,
     "pasos": [
-      "Presenta tu DNI.",
-      "Consulta si necesitas foto o pago previo.",
-      "Recoge tu carné según el plazo indicado."
+      "Consulta cómo solicitarlo o recuperarlo.",
+      "Busca el procedimiento vigente en la plataforma del SAE (sae.upsjb.edu.pe).",
+      "Si necesitas más ayuda, escribe o llama al SAE."
     ],
-    "lugar": "SAE · Completar con datos oficiales del SAE",
-    "horario": "Completar con datos oficiales del SAE",
-    "contacto": "Completar con datos oficiales del SAE"
+    "lugar": "Plataforma del SAE (sae.upsjb.edu.pe) o atención del SAE",
+    "contacto": "Correo: helpdesk@upsjb.edu.pe · Teléfono: (01) 644 9131 (opción 2) · WhatsApp: (51) 948 780 735"
   },
   "beca": {
     "titulo": "Becas y descuentos",
     "resumen": "Información sobre ayudas económicas disponibles.",
     "verificado": false,
     "pasos": [
-      "Consulta los tipos de beca vigentes.",
-      "Reúne los documentos solicitados.",
-      "Entrega tu solicitud dentro del plazo."
+      "Pregunta qué becas o descuentos hay vigentes.",
+      "Busca el procedimiento vigente en la plataforma del SAE (sae.upsjb.edu.pe).",
+      "Si necesitas más ayuda, escribe o llama al SAE."
     ],
-    "lugar": "SAE · Completar con datos oficiales del SAE",
-    "horario": "Completar con datos oficiales del SAE",
-    "contacto": "Completar con datos oficiales del SAE"
+    "lugar": "Plataforma del SAE (sae.upsjb.edu.pe) o atención del SAE",
+    "contacto": "Correo: helpdesk@upsjb.edu.pe · Teléfono: (01) 644 9131 (opción 2) · WhatsApp: (51) 948 780 735"
   },
   "traslado": {
     "titulo": "Traslados",
-    "resumen": "Cambio de sede, turno o carrera.",
+    "resumen": "Cambio de sede, turno o programa de estudios.",
     "verificado": false,
     "pasos": [
-      "Indica qué tipo de traslado necesitas.",
-      "Reúne los documentos solicitados.",
-      "Presenta tu solicitud en el SAE."
+      "Indica qué tipo de cambio necesitas.",
+      "Busca el procedimiento vigente en la plataforma del SAE (sae.upsjb.edu.pe).",
+      "Si necesitas más ayuda, escribe o llama al SAE."
     ],
-    "lugar": "SAE · Completar con datos oficiales del SAE",
-    "horario": "Completar con datos oficiales del SAE",
-    "contacto": "Completar con datos oficiales del SAE"
+    "lugar": "Plataforma del SAE (sae.upsjb.edu.pe) o atención del SAE",
+    "contacto": "Correo: helpdesk@upsjb.edu.pe · Teléfono: (01) 644 9131 (opción 2) · WhatsApp: (51) 948 780 735"
   },
   "retiro": {
     "titulo": "Retiro de cursos o ciclo",
-    "resumen": "Solicitud para retirarte de uno o más cursos o del ciclo.",
+    "resumen": "Solicitud para retirarte de uno o más cursos, o del ciclo.",
     "verificado": false,
     "pasos": [
-      "Consulta las fechas permitidas.",
-      "Presenta tu solicitud.",
-      "Verifica tu situación académica y de pagos."
+      "Consulta las fechas permitidas en el calendario académico.",
+      "Busca el procedimiento vigente en la plataforma del SAE (sae.upsjb.edu.pe).",
+      "Revisa tu correo institucional (Microsoft 365): ahí llegan los avisos oficiales."
     ],
-    "lugar": "SAE · Completar con datos oficiales del SAE",
-    "horario": "Completar con datos oficiales del SAE",
-    "contacto": "Completar con datos oficiales del SAE"
+    "lugar": "Plataforma del SAE (sae.upsjb.edu.pe) o atención del SAE",
+    "contacto": "Correo: helpdesk@upsjb.edu.pe · Teléfono: (01) 644 9131 (opción 2) · WhatsApp: (51) 948 780 735"
   },
   "documentos": {
     "titulo": "Documentos",
-    "resumen": "Documentos que se piden para trámites frecuentes.",
+    "resumen": "Documentos que se piden en los trámites frecuentes.",
     "verificado": false,
     "pasos": [
       "Indica qué trámite vas a realizar.",
-      "Verifica la lista de documentos.",
-      "Presenta copias y originales si se solicita."
+      "Busca el procedimiento vigente en la plataforma del SAE (sae.upsjb.edu.pe).",
+      "Si necesitas más ayuda, escribe o llama al SAE."
     ],
-    "lugar": "SAE · Completar con datos oficiales del SAE",
-    "horario": "Completar con datos oficiales del SAE",
-    "contacto": "Completar con datos oficiales del SAE"
+    "lugar": "Plataforma del SAE (sae.upsjb.edu.pe) o atención del SAE",
+    "contacto": "Correo: helpdesk@upsjb.edu.pe · Teléfono: (01) 644 9131 (opción 2) · WhatsApp: (51) 948 780 735"
   },
   "requisitos": {
     "titulo": "Requisitos",
@@ -136,193 +126,184 @@
     "verificado": false,
     "pasos": [
       "Indica qué trámite necesitas.",
-      "Consulta la lista de requisitos.",
-      "Reúne todo antes de presentarlo."
+      "Busca el procedimiento vigente en la plataforma del SAE (sae.upsjb.edu.pe).",
+      "Si necesitas más ayuda, escribe o llama al SAE."
     ],
-    "lugar": "SAE · Completar con datos oficiales del SAE",
-    "horario": "Completar con datos oficiales del SAE",
-    "contacto": "Completar con datos oficiales del SAE"
+    "lugar": "Plataforma del SAE (sae.upsjb.edu.pe) o atención del SAE",
+    "contacto": "Correo: helpdesk@upsjb.edu.pe · Teléfono: (01) 644 9131 (opción 2) · WhatsApp: (51) 948 780 735"
   },
   "admision": {
     "titulo": "Admisión",
     "resumen": "Información para postular a la universidad.",
     "verificado": false,
     "pasos": [
-      "Elige la carrera.",
-      "Consulta fechas y requisitos de postulación.",
-      "Presenta tu inscripción."
+      "Elige la carrera que te interesa.",
+      "Busca el procedimiento vigente en la plataforma del SAE (sae.upsjb.edu.pe).",
+      "Si necesitas más ayuda, escribe o llama al SAE."
     ],
-    "lugar": "SAE · Completar con datos oficiales del SAE",
-    "horario": "Completar con datos oficiales del SAE",
-    "contacto": "Completar con datos oficiales del SAE"
+    "lugar": "Plataforma del SAE (sae.upsjb.edu.pe) o atención del SAE",
+    "contacto": "Correo: helpdesk@upsjb.edu.pe · Teléfono: (01) 644 9131 (opción 2) · WhatsApp: (51) 948 780 735"
   },
   "carrera": {
     "titulo": "Carreras",
-    "resumen": "Carreras profesionales que ofrece la universidad.",
+    "resumen": "Programas de estudios que ofrece la universidad.",
     "verificado": false,
     "pasos": [
       "Consulta la lista de carreras.",
-      "Revisa el plan de estudios.",
-      "Pide orientación si tienes dudas."
+      "Pide orientación si tienes dudas.",
+      "Si necesitas más ayuda, escribe o llama al SAE."
     ],
-    "lugar": "SAE · Completar con datos oficiales del SAE",
-    "horario": "Completar con datos oficiales del SAE",
-    "contacto": "Completar con datos oficiales del SAE"
+    "lugar": "Plataforma del SAE (sae.upsjb.edu.pe) o atención del SAE",
+    "contacto": "Correo: helpdesk@upsjb.edu.pe · Teléfono: (01) 644 9131 (opción 2) · WhatsApp: (51) 948 780 735"
   },
   "ciclo": {
     "titulo": "Ciclos académicos",
     "resumen": "Información sobre el ciclo en curso y los siguientes.",
     "verificado": false,
     "pasos": [
-      "Consulta las fechas de inicio y fin.",
-      "Revisa el calendario académico."
+      "Revisa el calendario académico.",
+      "Revisa tu correo institucional (Microsoft 365): ahí llegan los avisos oficiales."
     ],
-    "lugar": "SAE · Completar con datos oficiales del SAE",
-    "horario": "Completar con datos oficiales del SAE",
-    "contacto": "Completar con datos oficiales del SAE"
+    "lugar": "Plataforma del SAE (sae.upsjb.edu.pe) o atención del SAE",
+    "contacto": "Correo: helpdesk@upsjb.edu.pe · Teléfono: (01) 644 9131 (opción 2) · WhatsApp: (51) 948 780 735"
   },
   "curso": {
     "titulo": "Cursos",
-    "resumen": "Consulta de cursos y secciones.",
+    "resumen": "Consulta de cursos, secciones y plan de estudios.",
     "verificado": false,
     "pasos": [
       "Revisa tu plan de estudios.",
-      "Consulta secciones y vacantes."
+      "Busca el procedimiento vigente en la plataforma del SAE (sae.upsjb.edu.pe).",
+      "Si necesitas más ayuda, escribe o llama al SAE."
     ],
-    "lugar": "SAE · Completar con datos oficiales del SAE",
-    "horario": "Completar con datos oficiales del SAE",
-    "contacto": "Completar con datos oficiales del SAE"
+    "lugar": "Plataforma del SAE (sae.upsjb.edu.pe) o atención del SAE",
+    "contacto": "Correo: helpdesk@upsjb.edu.pe · Teléfono: (01) 644 9131 (opción 2) · WhatsApp: (51) 948 780 735"
   },
   "examen": {
     "titulo": "Exámenes",
-    "resumen": "Fechas y reglas de evaluaciones.",
+    "resumen": "Fechas y reglas de las evaluaciones.",
     "verificado": false,
     "pasos": [
-      "Consulta el cronograma de exámenes.",
-      "Lleva tu carné o DNI el día del examen."
+      "Revisa el calendario académico.",
+      "Revisa tu correo institucional (Microsoft 365): ahí llegan los avisos oficiales."
     ],
-    "lugar": "SAE · Completar con datos oficiales del SAE",
-    "horario": "Completar con datos oficiales del SAE",
-    "contacto": "Completar con datos oficiales del SAE"
+    "lugar": "Plataforma del SAE (sae.upsjb.edu.pe) o atención del SAE",
+    "contacto": "Correo: helpdesk@upsjb.edu.pe · Teléfono: (01) 644 9131 (opción 2) · WhatsApp: (51) 948 780 735"
   },
   "notas": {
     "titulo": "Notas",
-    "resumen": "Consulta de calificaciones.",
+    "resumen": "Consulta de calificaciones y dudas sobre ellas.",
     "verificado": false,
     "pasos": [
-      "Ingresa al sistema académico con tu usuario.",
-      "Si tienes un reclamo, indica el curso y el docente."
+      "Revisa tus notas en el sistema académico.",
+      "Si no estás de acuerdo, consulta cómo pedir la revisión de tu evaluación.",
+      "Si necesitas más ayuda, escribe o llama al SAE."
     ],
-    "lugar": "SAE · Completar con datos oficiales del SAE",
-    "horario": "Completar con datos oficiales del SAE",
-    "contacto": "Completar con datos oficiales del SAE"
+    "lugar": "Plataforma del SAE (sae.upsjb.edu.pe) o atención del SAE",
+    "contacto": "Correo: helpdesk@upsjb.edu.pe · Teléfono: (01) 644 9131 (opción 2) · WhatsApp: (51) 948 780 735"
   },
   "horario": {
     "titulo": "Horarios",
     "resumen": "Horario de clases y de atención.",
     "verificado": false,
     "pasos": [
-      "Consulta tu horario de clases en el sistema académico.",
-      "El horario de atención del SAE se indica abajo."
+      "Consulta tu horario en el sistema académico.",
+      "Si necesitas más ayuda, escribe o llama al SAE."
     ],
-    "lugar": "SAE · Completar con datos oficiales del SAE",
-    "horario": "Completar con datos oficiales del SAE",
-    "contacto": "Completar con datos oficiales del SAE"
+    "lugar": "Plataforma del SAE (sae.upsjb.edu.pe) o atención del SAE",
+    "contacto": "Correo: helpdesk@upsjb.edu.pe · Teléfono: (01) 644 9131 (opción 2) · WhatsApp: (51) 948 780 735"
   },
   "cronograma": {
     "titulo": "Cronograma académico",
     "resumen": "Fechas importantes del ciclo.",
     "verificado": false,
     "pasos": [
-      "Consulta el calendario vigente.",
-      "Anota las fechas de matrícula, exámenes y pagos."
+      "Revisa el calendario académico.",
+      "Revisa tu correo institucional (Microsoft 365): ahí llegan los avisos oficiales."
     ],
-    "lugar": "SAE · Completar con datos oficiales del SAE",
-    "horario": "Completar con datos oficiales del SAE",
-    "contacto": "Completar con datos oficiales del SAE"
+    "lugar": "Plataforma del SAE (sae.upsjb.edu.pe) o atención del SAE",
+    "contacto": "Correo: helpdesk@upsjb.edu.pe · Teléfono: (01) 644 9131 (opción 2) · WhatsApp: (51) 948 780 735"
   },
   "sae": {
-    "titulo": "SAE",
-    "resumen": "Área del SAE: orientación y trámites para estudiantes.",
+    "titulo": "SAE · Servicio de Atención al Estudiante",
+    "resumen": "Te informa, orienta y atiende tus consultas y trámites académicos y administrativos.",
     "verificado": false,
     "pasos": [
-      "Cuéntanos qué necesitas.",
-      "Haz la seña del tema (por ejemplo: matrícula, constancia).",
-      "Te mostraremos la información y quién puede ayudarte."
+      "Cuéntanos qué necesitas con tus señas.",
+      "Te mostramos la información del tema.",
+      "Si necesitas más ayuda, escribe o llama al SAE."
     ],
-    "lugar": "SAE · Completar con datos oficiales del SAE",
-    "horario": "Completar con datos oficiales del SAE",
-    "contacto": "Completar con datos oficiales del SAE"
+    "lugar": "Servicio de Atención al Estudiante (SAE)",
+    "contacto": "Correo: helpdesk@upsjb.edu.pe · Teléfono: (01) 644 9131 (opción 2) · WhatsApp: (51) 948 780 735"
   },
   "caja": {
     "titulo": "Caja",
     "resumen": "Atención de pagos presenciales.",
     "verificado": false,
     "pasos": [
-      "Lleva tu DNI o código de estudiante.",
-      "Indica el concepto de pago."
+      "Indica el concepto de pago.",
+      "Busca el procedimiento vigente en la plataforma del SAE (sae.upsjb.edu.pe).",
+      "Si necesitas más ayuda, escribe o llama al SAE."
     ],
-    "lugar": "SAE · Completar con datos oficiales del SAE",
-    "horario": "Completar con datos oficiales del SAE",
-    "contacto": "Completar con datos oficiales del SAE"
+    "lugar": "Plataforma del SAE (sae.upsjb.edu.pe) o atención del SAE",
+    "contacto": "Correo: helpdesk@upsjb.edu.pe · Teléfono: (01) 644 9131 (opción 2) · WhatsApp: (51) 948 780 735"
   },
   "biblioteca": {
     "titulo": "Biblioteca",
     "resumen": "Préstamo de libros y espacios de estudio.",
     "verificado": false,
     "pasos": [
-      "Presenta tu carné.",
-      "Consulta el reglamento de préstamo."
+      "Consulta el reglamento de uso.",
+      "Si necesitas más ayuda, escribe o llama al SAE."
     ],
-    "lugar": "SAE · Completar con datos oficiales del SAE",
-    "horario": "Completar con datos oficiales del SAE",
-    "contacto": "Completar con datos oficiales del SAE"
+    "lugar": "Plataforma del SAE (sae.upsjb.edu.pe) o atención del SAE",
+    "contacto": "Correo: helpdesk@upsjb.edu.pe · Teléfono: (01) 644 9131 (opción 2) · WhatsApp: (51) 948 780 735"
   },
   "psicologia": {
     "titulo": "Psicología",
     "resumen": "Orientación y apoyo emocional.",
     "verificado": false,
     "pasos": [
-      "Solicita una cita.",
-      "Indica si necesitas apoyo de un intérprete."
+      "Pregunta cómo solicitar una cita.",
+      "Avisa si necesitas apoyo de un intérprete.",
+      "Si necesitas más ayuda, escribe o llama al SAE."
     ],
-    "lugar": "SAE · Completar con datos oficiales del SAE",
-    "horario": "Completar con datos oficiales del SAE",
-    "contacto": "Completar con datos oficiales del SAE"
+    "lugar": "Plataforma del SAE (sae.upsjb.edu.pe) o atención del SAE",
+    "contacto": "Correo: helpdesk@upsjb.edu.pe · Teléfono: (01) 644 9131 (opción 2) · WhatsApp: (51) 948 780 735"
   },
   "secretaria": {
     "titulo": "Secretaría académica",
     "resumen": "Gestión de trámites académicos.",
     "verificado": false,
     "pasos": [
-      "Indica el trámite.",
-      "Presenta tus documentos."
+      "Indica el trámite que necesitas.",
+      "Busca el procedimiento vigente en la plataforma del SAE (sae.upsjb.edu.pe).",
+      "Si necesitas más ayuda, escribe o llama al SAE."
     ],
-    "lugar": "SAE · Completar con datos oficiales del SAE",
-    "horario": "Completar con datos oficiales del SAE",
-    "contacto": "Completar con datos oficiales del SAE"
+    "lugar": "Plataforma del SAE (sae.upsjb.edu.pe) o atención del SAE",
+    "contacto": "Correo: helpdesk@upsjb.edu.pe · Teléfono: (01) 644 9131 (opción 2) · WhatsApp: (51) 948 780 735"
   },
   "telefono": {
     "titulo": "Teléfono",
-    "resumen": "Líneas de contacto de la universidad.",
+    "resumen": "Línea de contacto del SAE.",
     "verificado": false,
     "pasos": [
-      "Consulta el número de la oficina que necesitas."
+      "Llama al (01) 644 9131 y elige la opción 2.",
+      "También puedes escribir por WhatsApp al (51) 948 780 735."
     ],
-    "lugar": "SAE · Completar con datos oficiales del SAE",
-    "horario": "Completar con datos oficiales del SAE",
-    "contacto": "Completar con datos oficiales del SAE"
+    "lugar": "Teléfono del SAE",
+    "contacto": "Correo: helpdesk@upsjb.edu.pe · Teléfono: (01) 644 9131 (opción 2) · WhatsApp: (51) 948 780 735"
   },
   "correo": {
     "titulo": "Correo",
-    "resumen": "Correos de contacto de las oficinas.",
+    "resumen": "Correo de contacto del SAE.",
     "verificado": false,
     "pasos": [
-      "Consulta el correo de la oficina que necesitas."
+      "Escribe a helpdesk@upsjb.edu.pe.",
+      "Indica tu nombre, tu código de estudiante y tu consulta."
     ],
-    "lugar": "SAE · Completar con datos oficiales del SAE",
-    "horario": "Completar con datos oficiales del SAE",
-    "contacto": "Completar con datos oficiales del SAE"
+    "lugar": "Correo del SAE",
+    "contacto": "Correo: helpdesk@upsjb.edu.pe · Teléfono: (01) 644 9131 (opción 2) · WhatsApp: (51) 948 780 735"
   },
   "hola": {
     "titulo": "¡Hola!",
@@ -356,8 +337,9 @@
   },
   "ayuda": {
     "titulo": "¿Necesitas ayuda?",
-    "resumen": "Haz la seña del tema (matrícula, pensión, constancia…) o elige un tema en la parte de abajo. Si prefieres, una persona del SAE puede atenderte.",
-    "verificado": true
+    "resumen": "Haz la seña del tema (matrícula, pensión, constancia…) o elige un tema abajo. Una persona del SAE también puede atenderte.",
+    "verificado": false,
+    "contacto": "Correo: helpdesk@upsjb.edu.pe · Teléfono: (01) 644 9131 (opción 2) · WhatsApp: (51) 948 780 735"
   },
   "que": {
     "titulo": "¿Sobre qué tema?",
@@ -388,5 +370,156 @@
     "titulo": "¿Sobre qué tema?",
     "resumen": "Haz la seña del tema que te interesa (por ejemplo: matrícula, pensión, constancia) o elígelo abajo.",
     "verificado": true
+  },
+  "reserva": {
+    "titulo": "Reserva de matrícula",
+    "resumen": "Trámite para postergar tus estudios por un periodo.",
+    "verificado": false,
+    "pasos": [
+      "Pregunta por los plazos y condiciones vigentes.",
+      "Busca el procedimiento vigente en la plataforma del SAE (sae.upsjb.edu.pe).",
+      "Revisa tu correo institucional (Microsoft 365): ahí llegan los avisos oficiales."
+    ],
+    "lugar": "Plataforma del SAE (sae.upsjb.edu.pe) o atención del SAE",
+    "contacto": "Correo: helpdesk@upsjb.edu.pe · Teléfono: (01) 644 9131 (opción 2) · WhatsApp: (51) 948 780 735"
+  },
+  "convalidacion": {
+    "titulo": "Convalidación",
+    "resumen": "Trámite para reconocer cursos que llevaste en otra institución.",
+    "verificado": false,
+    "pasos": [
+      "Pregunta por los requisitos y plazos.",
+      "Busca el procedimiento vigente en la plataforma del SAE (sae.upsjb.edu.pe).",
+      "Si necesitas más ayuda, escribe o llama al SAE."
+    ],
+    "lugar": "Plataforma del SAE (sae.upsjb.edu.pe) o atención del SAE",
+    "contacto": "Correo: helpdesk@upsjb.edu.pe · Teléfono: (01) 644 9131 (opción 2) · WhatsApp: (51) 948 780 735"
+  },
+  "justificacion": {
+    "titulo": "Justificación de inasistencias",
+    "resumen": "Trámite para justificar las clases a las que no pudiste asistir.",
+    "verificado": false,
+    "pasos": [
+      "Pregunta por el plazo y los documentos que sustentan tu falta.",
+      "Busca el procedimiento vigente en la plataforma del SAE (sae.upsjb.edu.pe).",
+      "Si necesitas más ayuda, escribe o llama al SAE."
+    ],
+    "lugar": "Plataforma del SAE (sae.upsjb.edu.pe) o atención del SAE",
+    "contacto": "Correo: helpdesk@upsjb.edu.pe · Teléfono: (01) 644 9131 (opción 2) · WhatsApp: (51) 948 780 735"
+  },
+  "reclamo": {
+    "titulo": "Quejas y reclamos",
+    "resumen": "El SAE recibe y orienta tus quejas y reclamos.",
+    "verificado": false,
+    "pasos": [
+      "Cuenta qué ocurrió y con qué oficina.",
+      "Puedes usar los canales de atención o el Libro de Reclamaciones.",
+      "Si necesitas más ayuda, escribe o llama al SAE."
+    ],
+    "lugar": "Plataforma del SAE (sae.upsjb.edu.pe) o atención del SAE",
+    "contacto": "Correo: helpdesk@upsjb.edu.pe · Teléfono: (01) 644 9131 (opción 2) · WhatsApp: (51) 948 780 735"
+  },
+  "titulo": {
+    "titulo": "Grado y título",
+    "resumen": "Información sobre el grado de bachiller y el título profesional.",
+    "verificado": false,
+    "pasos": [
+      "Pregunta por los requisitos y pasos vigentes.",
+      "Busca el procedimiento vigente en la plataforma del SAE (sae.upsjb.edu.pe).",
+      "Si necesitas más ayuda, escribe o llama al SAE."
+    ],
+    "lugar": "Plataforma del SAE (sae.upsjb.edu.pe) o atención del SAE",
+    "contacto": "Correo: helpdesk@upsjb.edu.pe · Teléfono: (01) 644 9131 (opción 2) · WhatsApp: (51) 948 780 735"
+  },
+  "revision": {
+    "titulo": "Revisión de evaluaciones",
+    "resumen": "Trámite si tienes dudas sobre la calificación de una evaluación.",
+    "verificado": false,
+    "pasos": [
+      "Indica el curso y la evaluación.",
+      "Busca el procedimiento vigente en la plataforma del SAE (sae.upsjb.edu.pe).",
+      "Si necesitas más ayuda, escribe o llama al SAE."
+    ],
+    "lugar": "Plataforma del SAE (sae.upsjb.edu.pe) o atención del SAE",
+    "contacto": "Correo: helpdesk@upsjb.edu.pe · Teléfono: (01) 644 9131 (opción 2) · WhatsApp: (51) 948 780 735"
+  },
+  "contrasena": {
+    "titulo": "Contraseña",
+    "resumen": "Ayuda para recuperar o cambiar la contraseña de tu cuenta institucional.",
+    "verificado": false,
+    "pasos": [
+      "Consulta en la plataforma del SAE cómo restablecer la contraseña de tu cuenta Microsoft 365.",
+      "Si necesitas más ayuda, escribe o llama al SAE."
+    ],
+    "lugar": "Plataforma del SAE (sae.upsjb.edu.pe) o atención del SAE",
+    "contacto": "Correo: helpdesk@upsjb.edu.pe · Teléfono: (01) 644 9131 (opción 2) · WhatsApp: (51) 948 780 735"
+  },
+  "wifi": {
+    "titulo": "Wifi",
+    "resumen": "Ayuda para conectarte a la red wifi académica.",
+    "verificado": false,
+    "pasos": [
+      "Consulta en la plataforma del SAE los pasos para acceder a la red wifi académica.",
+      "Si necesitas más ayuda, escribe o llama al SAE."
+    ],
+    "lugar": "Plataforma del SAE (sae.upsjb.edu.pe) o atención del SAE",
+    "contacto": "Correo: helpdesk@upsjb.edu.pe · Teléfono: (01) 644 9131 (opción 2) · WhatsApp: (51) 948 780 735"
+  },
+  "plataforma": {
+    "titulo": "Plataforma del SAE",
+    "resumen": "Base de conocimiento con los trámites y consultas más frecuentes.",
+    "verificado": false,
+    "pasos": [
+      "Ingresa a sae.upsjb.edu.pe.",
+      "Busca tu consulta por tema.",
+      "Si necesitas más ayuda, escribe o llama al SAE."
+    ],
+    "lugar": "sae.upsjb.edu.pe",
+    "contacto": "Correo: helpdesk@upsjb.edu.pe · Teléfono: (01) 644 9131 (opción 2) · WhatsApp: (51) 948 780 735"
+  },
+  "buenos_dias": {
+    "titulo": "¡Buenos días!",
+    "resumen": "Bienvenido al módulo del SAE. Haz las señas de tu consulta.",
+    "verificado": false
+  },
+  "buenas_tardes": {
+    "titulo": "¡Buenas tardes!",
+    "resumen": "Bienvenido al módulo del SAE. Haz las señas de tu consulta.",
+    "verificado": false
+  },
+  "perdon": {
+    "titulo": "No te preocupes",
+    "resumen": "Puedes volver a hacer tus señas.",
+    "verificado": false
+  },
+  "yo": {
+    "titulo": "Te escuchamos",
+    "resumen": "Continúa con las señas de tu consulta.",
+    "verificado": false
+  },
+  "estudiante": {
+    "titulo": "Estudiante",
+    "resumen": "Muy bien. Ahora haz la seña del tema que necesitas, por ejemplo matrícula o constancia.",
+    "verificado": false
+  },
+  "problema": {
+    "titulo": "¿Qué problema tienes?",
+    "resumen": "Haz la seña del tema (por ejemplo: pensión, wifi, contraseña). El SAE puede ayudarte.",
+    "verificado": false
+  },
+  "repetir": {
+    "titulo": "Podemos repetir",
+    "resumen": "Haz otra vez tus señas con calma, frente a la cámara.",
+    "verificado": false
+  },
+  "no_entiendo": {
+    "titulo": "Te ayudamos",
+    "resumen": "Si no entiendes la información, pulsa «Leer en voz alta» o pide apoyo a una persona del SAE.",
+    "verificado": false
+  },
+  "esperar": {
+    "titulo": "Con gusto esperamos",
+    "resumen": "Cuando estés listo, continúa con tus señas o pulsa «Listo».",
+    "verificado": false
   }
 }

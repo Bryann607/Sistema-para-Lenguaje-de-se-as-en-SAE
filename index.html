@@ -72,6 +72,7 @@
       <p class="sub-frase vacio" id="subFrase" aria-live="polite">Los subtítulos aparecerán aquí.</p>
       <div class="sub-ctrl">
         <label class="check"><input type="checkbox" id="vozOn" checked> Voz</label>
+        <button class="btn-texto" id="btnListo" type="button" title="Terminar la oración y ver la información">Listo</button>
         <button class="btn-texto" id="btnRepetir" type="button">Repetir</button>
         <label class="slider">Pausa entre frases
           <input type="range" id="pausa" min="3" max="8" step="0.5" value="4">
@@ -82,7 +83,8 @@
     <ol class="uso">
       <li>Activa la cámara.</li>
       <li>Colócate para que se vean tus hombros y tus manos.</li>
-      <li>Haz la seña del tema que necesitas.</li>
+      <li>Haz las señas de tu consulta, una tras otra (por ejemplo: hola, matrícula, por favor).</li>
+      <li>Al terminar, espera un momento o pulsa «Listo»: verás la información de tu consulta.</li>
     </ol>
   </section>
 
@@ -104,6 +106,8 @@
         <h2 id="rTitulo"></h2>
         <button class="btn-texto" id="btnVoz" type="button" title="Leer la respuesta en voz alta">Leer en voz alta</button>
       </div>
+      <p class="consulta" id="rConsulta" hidden></p>
+      <p class="directa" id="rDirecta" hidden></p>
       <p id="rResumen"></p>
       <ol id="rPasos"></ol>
       <dl class="datos-r">
@@ -111,6 +115,10 @@
         <div><dt>Horario</dt><dd id="rHorario"></dd></div>
         <div><dt>Contacto</dt><dd id="rContacto"></dd></div>
       </dl>
+      <div class="otros-temas" id="rOtrosWrap" hidden>
+        <h3>También mencionaste</h3>
+        <div id="rOtros"></div>
+      </div>
       <p class="pendiente" id="rPendiente" hidden>Contenido de ejemplo, pendiente de validar por el SAE.</p>
     </article>
 
@@ -126,7 +134,8 @@
   </section>
 
   <section class="temas" aria-label="Temas frecuentes">
-    <h2>También puedes elegir un tema</h2>
+    <h2>También puedes elegir los temas</h2>
+    <p class="temas-ayuda">Toca uno o varios temas y pulsa «Listo» (o espera un momento) para ver la información.</p>
     <div id="temas"></div>
   </section>
 </main>

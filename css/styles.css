@@ -123,6 +123,13 @@ body[data-vista="entrenar"] .stage-col { display: none; }
 .datos-r div { display: grid; grid-template-columns: 5.5rem 1fr; gap: .75rem; padding-top: .5rem; border-top: 1px solid var(--plata-1); }
 .datos-r dt { font-weight: 700; color: var(--suave); }
 .datos-r dd { margin: 0; }
+.respuesta .consulta { margin: 0 0 .6rem; font-style: italic; color: var(--suave); }
+.respuesta .directa { margin: 0 0 .6rem; font-weight: 700; }
+.respuesta .destacado { background: #fff4d6; border-left: 4px solid var(--accion); padding: .35rem .6rem; border-radius: 4px; }
+.temas-ayuda { margin: 0 0 .75rem; color: var(--suave); }
+.otros-temas { margin-top: .9rem; padding-top: .6rem; border-top: 1px solid var(--plata-1); }
+.otros-temas h3 { margin: 0 0 .4rem; font-size: 1rem; color: var(--suave); }
+.otros-temas > div { display: flex; flex-wrap: wrap; gap: .5rem; }
 .pendiente { margin: .9rem 0 0; font-size: .9rem; color: var(--aviso); }
 .chatbot { background: var(--plata-1); border-style: dashed; border-color: var(--plata-2); color: var(--suave); }
 .chatbot h2 { color: var(--suave); }

@@ -5,8 +5,8 @@ Esta guía es el plan para llegar a algo realmente utilizable en el SAE.
 
 ## Regla de oro: empieza pequeño
 
-No entrenes las 39 señas de golpe. Empieza con el **piloto de 12 señas** (marcadas en
-`data/vocabulario.json` con `"piloto": true`; en la pestaña Datos está activo «Mostrar solo las 12 señas del piloto»):
+No entrenes todas las señas de golpe. Empieza con el **piloto de 12 señas** (marcadas en
+`data/vocabulario.json` con `"piloto": true`; en la pestaña Datos puedes activar «Mostrar solo las 12 señas del piloto»; por defecto se ven todas):
 
 > hola · gracias · adiós · sí · no · ayuda · matrícula · pensión · constancia · certificado · horario · requisitos
 

@@ -3,6 +3,7 @@
 import { SEQ_LEN, REPOSO } from './config.js';
 import { flattenSequence } from './features.js';
 import { componerFrase } from './frases.js';
+import { interpretarConsulta, CAMPO_POR_PREGUNTA } from './intencion.js';
 import { Voz } from './voz.js';
 
 const $ = (s) => document.querySelector(s);
@@ -46,12 +47,15 @@ export function initTraductor(app) {
   function cerrarFrase() {
     clearTimeout(tFrase);
     if (!frase.length) return;
-    const texto = componerFrase(frase, app.vocab, app.frases);
+    const ids = frase;
+    const texto = componerFrase(ids, app.vocab, app.frases);
     frase = [];
     if (!texto) return;
     ultimaFrase = texto;
     mostrarFrase(texto, 'final');
+    responderOracion(ids, texto);                              // la información sale DESPUÉS de completar la oración
     voz.decir(texto, { onPalabra: resaltar, onFin: quitarResalte });
+    programarReinicio();
   }
   $('#vozOn').addEventListener('change', (e) => { voz.activa = e.target.checked; if (!voz.activa) voz.cancelar(); });
   $('#btnRepetir').addEventListener('click', () => { if (ultimaFrase) voz.decir(ultimaFrase, { forzar: true, onPalabra: resaltar, onFin: quitarResalte }); });
@@ -59,13 +63,27 @@ export function initTraductor(app) {
   if (!voz.disponible) { $('#vozOn').checked = false; $('#vozOn').disabled = true; $('#btnRepetir').hidden = true; }
 
   // ---------- respuesta del SAE ----------
+  // Se decide con la oración completa: «hola, matrícula, por favor» responde sobre la matrícula,
+  // no sobre la última seña. La cortesía (hola, gracias, por favor…) solo cuenta si es lo único dicho.
   let textoVoz = '';
-  function mostrarRespuesta(id) {
+  const CAMPOS = { resumen: '#rResumen', pasos: '#rPasos', lugar: '#rLugar', horario: '#rHorario', contacto: '#rContacto' };
+
+  function responderOracion(ids, texto) {
+    const c = interpretarConsulta(ids, app.vocab, app.frases);
+    if (!c.principal) return;
+    mostrarRespuesta(c.principal, { oracion: texto, pregunta: c.pregunta, otros: c.otros });
+  }
+
+  function mostrarRespuesta(id, ctx = {}) {
     const e = app.respuestas[id] || {
       titulo: app.nombreDe(id), verificado: false,
       resumen: 'Todavía no hay información cargada para esta seña. Se puede agregar en data/respuestas.json.',
     };
     $('#rTitulo').textContent = e.titulo;
+    $('#rConsulta').textContent = ctx.oracion ? `Entendí: ${ctx.oracion}` : '';
+    $('#rConsulta').hidden = !ctx.oracion;
+    const directa = ctx.pregunta && e.por_pregunta?.[ctx.pregunta];   // respuesta puntual opcional (respuestas.json)
+    $('#rDirecta').textContent = directa || ''; $('#rDirecta').hidden = !directa;
     $('#rResumen').textContent = e.resumen || '';
     const ol = $('#rPasos'); ol.replaceChildren();
     (e.pasos || []).forEach((p) => { const li = document.createElement('li'); li.textContent = p; ol.appendChild(li); });
@@ -74,8 +92,23 @@ export function initTraductor(app) {
     filas.forEach(([sel, v]) => { $(sel).textContent = v || ''; $(sel).parentElement.hidden = !v; });
     document.querySelector('.datos-r').hidden = !filas.some(([, v]) => v);
     $('#rPendiente').hidden = e.verificado !== false;
+    // Resalta el dato que responde a la pregunta (¿dónde? → lugar, ¿cuándo? → horario…).
+    const campo = ctx.pregunta ? CAMPO_POR_PREGUNTA[ctx.pregunta] : null;
+    Object.entries(CAMPOS).forEach(([k, sel]) => {
+      const el = $(sel), fila = (k === 'resumen' || k === 'pasos') ? el : el.parentElement;
+      fila.classList.toggle('destacado', k === campo);
+    });
+    // Otros temas que se mencionaron en la misma oración: botones para verlos.
+    const otros = $('#rOtros'); otros.replaceChildren();
+    (ctx.otros || []).forEach((oid) => {
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'tema'; b.textContent = app.nombreDe(oid);
+      const resto = [id, ...(ctx.otros || []).filter((x) => x !== oid)];
+      b.addEventListener('click', () => mostrarRespuesta(oid, { ...ctx, otros: resto, pregunta: ctx.pregunta }));
+      otros.appendChild(b);
+    });
+    $('#rOtrosWrap').hidden = !(ctx.otros || []).length;
     const r = $('#respuesta'); r.hidden = false;
-    textoVoz = [e.titulo, e.resumen, ...(e.pasos || [])].filter(Boolean).join('. ');
+    textoVoz = [e.titulo, directa, e.resumen, ...(e.pasos || [])].filter(Boolean).join('. ');
     if (window.matchMedia('(max-width: 900px)').matches) r.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
@@ -94,12 +127,16 @@ export function initTraductor(app) {
     temporizador = setTimeout(limpiar, 60000);
   }
 
+  // Una seña de la cámara solo se suma a la oración en curso; la información aparece al cerrarla.
   function confirmar(id) {
     agregarFicha(id);
     sumarASubtitulo(id);
-    mostrarRespuesta(id);
     programarReinicio();
   }
+  // Un toque en «Temas frecuentes» se comporta igual que una seña: se suma a la oración y la información
+  // aparece al completarla (pausa o botón «Listo»). Así se pueden combinar toques: Hola + Matrícula + Por favor.
+  const confirmarToque = confirmar;
+  $('#btnListo').addEventListener('click', cerrarFrase);       // terminar la oración sin esperar la pausa
 
   function limpiar() {
     clearTimeout(temporizador);
@@ -169,7 +206,7 @@ export function initTraductor(app) {
     const fila = document.createElement('div');
     senas.forEach((s) => {
       const b = document.createElement('button'); b.className = 'tema'; b.type = 'button'; b.textContent = s.nombre;
-      b.addEventListener('click', () => confirmar(s.id));
+      b.addEventListener('click', () => confirmarToque(s.id));
       fila.appendChild(b);
     });
     g.append(h, fila); cont.appendChild(g);

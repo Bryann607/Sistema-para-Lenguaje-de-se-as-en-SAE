@@ -50,7 +50,7 @@ index.html            Módulo de USUARIO (público): traducción y consulta
 admin.html            Módulo de ADMINISTRADOR (solo local): datos y entrenamiento
 css/styles.css        Tema UPSJB
 js/                   Lógica (app, cámara, características, modelo, vistas, auth)
-data/vocabulario.json Señas a reconocer (39 iniciales, editables)
+data/vocabulario.json Señas a reconocer (57, editables)
 data/respuestas.json  Información que se muestra por cada seña
 data/frases.json      Reglas para armar la oración de los subtítulos
 data/dataset/         Datasets exportados (.json.gz) que se versionan en Git

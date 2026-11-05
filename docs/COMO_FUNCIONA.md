@@ -15,7 +15,9 @@ Estilo: *cliente web estático (JAMstack) + inferencia en el borde*, organizado 
 ```
 cámara → vision.js (MediaPipe) → features.js (201 números por fotograma, normalizados)
        → ventana de 30 fotogramas → model.js (red) → traductor.js (umbral + votación + enfriamiento)
-       → respuestas.json (tarjeta)  +  frases.js (oración con data/frases.json)  +  voz.js
+       → (cada seña se suma a la oración en curso; al cerrarla por pausa o botón «Listo»:)
+       → intencion.js (tema + pregunta de la oración completa) → respuestas.json (tarjeta)
+         + frases.js (oración con data/frases.json) + voz.js
 ```
 
 ## Flujo de aprendizaje (módulo de administrador)
@@ -35,7 +37,7 @@ datasets .json/.json.gz (data/dataset, nube) ──┘                          
 | `js/vision.js`, `js/app.js` | cámara, detección, estado común | sí |
 | `js/model.js` | construir, entrenar, cargar y predecir | sí |
 | `js/aumento.js`, `js/evaluacion.js` | variantes de datos y métricas (lógica pura) | sí (los importa model.js) |
-| `js/traductor.js`, `js/frases.js`, `js/voz.js` | interfaz de usuario, oraciones, voz | sí |
+| `js/traductor.js`, `js/frases.js`, `js/intencion.js`, `js/voz.js` | interfaz de usuario, oraciones, qué información mostrar según la oración, voz | sí |
 | `js/admin.js`, `auth.js`, `datos.js`, `videos.js`, `videoimport.js`, `entrenar.js`, `db.js`, `dataset.js`, `nube*.js` | administración | **no** |
 | `data/vocabulario.json`, `respuestas.json`, `frases.json` | contenido editable | sí |
 | `data/dataset/*.json(.gz)` | datos de entrenamiento del equipo | no |
@@ -59,7 +61,7 @@ datasets .json/.json.gz (data/dataset, nube) ──┘                          
 |---|---|
 | Algo de `features.js`, `config.js` o `aumento.js` | `node --test` y reentrenar |
 | `videoimport.js` / `videos.js` | importar un video de prueba y leer el registro |
-| `traductor.js`, `frases.js`, `voz.js` | abrir `index.html` y usar los temas (no necesita modelo) |
+| `traductor.js`, `frases.js`, `intencion.js`, `voz.js` | `node --test` y abrir `index.html` y usar los temas (no necesita modelo) |
 | `pages.yml` o archivos públicos | `python tools/armar_sitio.py --verificar` y abrir `_site/` con `python -m http.server` |
 | `model.js` | entrenar un modelo pequeño en `admin.html` y ver que termine y se vea en Traductor |
 

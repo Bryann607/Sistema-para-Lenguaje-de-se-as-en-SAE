@@ -58,13 +58,65 @@ Dos límites importantes: (1) las variantes son parientes de la muestra original
 ## 2. Subtítulos y voz (index.html)
 
 - Cada seña detectada se suma a la frase en curso (línea de señas en mayúsculas) y se muestra una oración provisional.
+  **La información del SAE ya no aparece seña por seña**: se muestra cuando la frase se cierra, interpretando la
+  oración completa (ver 2b).
 - Tras la **pausa entre frases** (3–8 s, por defecto 4 s) sin nuevas señas, la frase se cierra: se muestra la
   oración final y se lee en voz alta **exactamente el mismo texto**. Si empieza una seña nueva, se corta la lectura.
 - Si la voz del navegador informa qué palabra lee, esa palabra se resalta en el subtítulo.
+- El botón **Listo** cierra la frase al instante, sin esperar la pausa.
 - **Voz** activa/desactiva la lectura; **Repetir** vuelve a leer la última frase.
-- Los botones de «Temas frecuentes» también alimentan los subtítulos y la voz.
+- Los botones de «Temas frecuentes» funcionan igual que las señas: se suman a la oración y la información sale al
+  completarla (pausa o botón **Listo**). Se pueden combinar toques: Hola + Matrícula + Por favor.
 - Usa la voz del navegador (sin internet, sin claves). El idioma preferido es es-PE; si no existe, usa otra
   variante del español. Prueba en la PC del SAE qué voz tiene instalada.
+
+## 2b. Información según la oración completa (`js/intencion.js`)
+
+Antes, la tarjeta mostraba la información de **la última seña** (con «hola, matrícula, por favor» salía «por favor»).
+Ahora, al cerrarse la frase, se interpreta la oración entera:
+
+| Se hizo… | Se muestra… |
+|---|---|
+| `matrícula` | Matrícula |
+| `hola, matrícula, por favor` | Matrícula (hola y por favor son cortesía, no un tema) |
+| `cuándo, matrícula` | Matrícula, con el **horario resaltado** y «Entendí: ¿Cuándo es la matrícula?» |
+| `hola, matrícula, pensión` | Matrícula, y un botón **«También mencionaste: Pensión»** para ver la otra |
+| `ayuda, constancia` | Constancias |
+| `hola` / `gracias` / `por favor` solos | La respuesta de cortesía de esa seña |
+| `ayuda` sola, o solo una pregunta | La respuesta de ayuda / «¿Sobre qué tema?» |
+
+Reglas: **el tema manda** sobre la cortesía, la ayuda y las preguntas; el orden de las señas no cambia el tema; si hay
+varios temas, el primero es el principal. La palabra interrogativa resalta el dato que responde (¿dónde? → lugar,
+¿cuándo? → horario, ¿quién? → contacto, ¿cómo? → pasos, ¿qué? → resumen).
+
+**Respuesta puntual opcional** (sin tocar código): en `data/respuestas.json`, un tema puede traer `por_pregunta`:
+`"matricula": { ..., "por_pregunta": { "cuando": "La matrícula es del 1 al 15 de cada ciclo." } }`.
+Si la consulta incluye esa pregunta, el texto aparece destacado sobre el resumen. Usa solo datos oficiales del SAE.
+
+> Esta lógica por reglas es la base para el chatbot: más adelante `interpretarConsulta()` puede reemplazarse (o
+> complementarse) por un asistente que genere la respuesta a partir de la oración completa.
+
+## 2c. Vocabulario ampliado (57 señas) y palabras de contexto
+
+Se agregaron 18 señas relacionadas con lo que hace el SAE (informar, orientar y atender trámites y consultas):
+- **Cortesía:** buenos días, buenas tardes, disculpa.
+- **Conversación básica:** yo, estudiante, problema, repetir, no entiendo, esperar.
+- **Trámites y vida académica:** reserva de matrícula, convalidación, justificación de inasistencias, quejas y reclamos, grado y título, revisión de evaluaciones.
+- **Cuentas y tecnología:** contraseña, wifi, plataforma del SAE.
+
+Las palabras de conversación (`contexto` en `data/frases.json`) **acompañan, no son un tema**: «yo, estudiante, matrícula» →
+«Soy estudiante. Necesito información sobre la matrícula.» y responde Matrícula; «problema, wifi» → «Tengo un problema con el wifi.»
+
+**Importante:** son señas nuevas, así que hay que **grabarlas y reentrenar**; el modelo actual no las conoce. Los temas
+nuevos también se pueden tocar en la pantalla sin modelo. Antes de grabar, **verifica la forma de cada seña** con el
+Diccionario de LSP de la PUCP (grupo Señas Gramaticales) o con personas señantes: la lista se eligió por los temas del
+SAE, no copiando un listado de la PUCP.
+
+## 2d. Contenido de `data/respuestas.json`
+
+Ahora está orientado al SAE e incluye sus canales oficiales (correo helpdesk@upsjb.edu.pe, teléfono (01) 644 9131 opción 2,
+WhatsApp (51) 948 780 735) y la plataforma sae.upsjb.edu.pe. Los pasos son **generales** (no se inventaron costos, plazos ni
+horarios): hay que reemplazarlos con los procedimientos oficiales y poner `verificado: true`.
 
 ## 3. Cómo se arma la oración (`data/frases.json`)
 

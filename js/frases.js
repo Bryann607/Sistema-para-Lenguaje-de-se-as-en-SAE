@@ -4,7 +4,8 @@
 // Orden de resolución:
 //   1) saludos / «sí» / «no» al inicio; «por favor», «gracias», «adiós» al final;
 //   2) plantilla explícita que coincida (la que use más señas, en cualquier orden);
-//   3) pregunta + tema(s), «ayuda» + tema(s) o «necesito información sobre» + tema(s).
+//   3) palabras de contexto («soy estudiante», «tengo un problema con…»), pregunta + tema(s),
+//      «ayuda» + tema(s) o «necesito información sobre» + tema(s).
 
 const unir = (nombres) => (nombres.length < 2 ? nombres[0] || '' : `${nombres.slice(0, -1).join(', ')} y ${nombres[nombres.length - 1]}`);
 
@@ -43,10 +44,23 @@ export function componerFrase(ids, vocab, reglas = {}) {
 
   // 3) reglas generales con lo que quede
   const resto = restantes();
+  const ctx = reglas.contexto || {};                        // yo, estudiante, problema… (no son un tema)
+  const contexto = resto.filter((id) => ctx[id]);
   const preguntas = resto.filter((id) => reglas.preguntas?.[id]);
   const hayAyuda = resto.includes('ayuda') && reglas.ayuda;
-  const temas = resto.filter((id) => !reglas.preguntas?.[id] && id !== 'ayuda');
+  const temas = resto.filter((id) => !reglas.preguntas?.[id] && id !== 'ayuda' && !ctx[id]);
   const todosLugares = temas.length > 0 && temas.every((id) => senas.get(id).categoria === 'lugares');
+
+  // «Soy estudiante.», «Tengo un problema con {tema}.»… van antes de la pregunta o del tema
+  let temasUsados = false;
+  const hayOtros = inicio.length || final.length || medio.length || temas.length || preguntas.length || hayAyuda;
+  const frasesCtx = [];
+  for (const id of contexto) {
+    const e = ctx[id];
+    if (temas.length && e.con_tema && !preguntas.length && !hayAyuda && !temasUsados) { frasesCtx.push(rellenar(e.con_tema, temas)); temasUsados = true; }
+    else if (hayOtros && e.junto !== undefined) { if (e.junto) frasesCtx.push(e.junto); }
+    else frasesCtx.push(e.solo);
+  }
 
   for (const q of preguntas) {
     const r = reglas.preguntas[q];
@@ -54,8 +68,8 @@ export function componerFrase(ids, vocab, reglas = {}) {
     else medio.push(r.solo);
   }
   if (hayAyuda) medio.push(temas.length && !preguntas.length ? rellenar(reglas.ayuda.con_tema, temas) : reglas.ayuda.solo);
-  else if (!preguntas.length && temas.length && reglas.sinPregunta) medio.push(rellenar(reglas.sinPregunta, temas));
-  else if (!preguntas.length && !hayAyuda && temas.length) medio.push(`${unir(temas.map(nombre))}.`.replace(/^./, (c) => c.toUpperCase()));
+  else if (!preguntas.length && temas.length && !temasUsados && reglas.sinPregunta) medio.push(rellenar(reglas.sinPregunta, temas));
+  else if (!preguntas.length && !hayAyuda && temas.length && !temasUsados) medio.push(`${unir(temas.map(nombre))}.`.replace(/^./, (c) => c.toUpperCase()));
 
-  return [...inicio, ...medio, ...final].join(' ').trim();
+  return [...inicio, ...frasesCtx, ...medio, ...final].join(' ').trim();
 }

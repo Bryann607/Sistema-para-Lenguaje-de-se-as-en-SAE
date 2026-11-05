@@ -1,9 +1,13 @@
 {
-  "_ayuda": "Lista de señas a reconocer. 'piloto': true marca las 12 señas con las que conviene empezar. Para agregar una: añade un objeto con id (sin tildes ni espacios), nombre y categoria; luego graba muestras en admin.html y vuelve a entrenar.",
+  "_ayuda": "Lista de señas a reconocer. 'piloto': true marca las 12 señas con las que conviene empezar. Para agregar una: añade un objeto con id (sin tildes ni espacios), nombre y categoria; luego graba muestras en admin.html y vuelve a entrenar. Las señas de Conversación básica, Cuentas y tecnología y las agregadas en Trámites y Vida académica amplían el vocabulario con temas del SAE: antes de grabarlas, verifica la forma de cada seña con el Diccionario LSP de la PUCP o con personas señantes.",
   "categorias": [
     {
       "id": "cortesia",
       "nombre": "Cortesía y básicas"
+    },
+    {
+      "id": "conversacion",
+      "nombre": "Conversación básica"
     },
     {
       "id": "preguntas",
@@ -16,6 +20,10 @@
     {
       "id": "academico",
       "nombre": "Vida académica"
+    },
+    {
+      "id": "cuentas",
+      "nombre": "Cuentas y tecnología"
     },
     {
       "id": "lugares",
@@ -229,6 +237,96 @@
       "id": "correo",
       "nombre": "Correo",
       "categoria": "lugares"
+    },
+    {
+      "id": "buenos_dias",
+      "nombre": "Buenos días",
+      "categoria": "cortesia"
+    },
+    {
+      "id": "buenas_tardes",
+      "nombre": "Buenas tardes",
+      "categoria": "cortesia"
+    },
+    {
+      "id": "perdon",
+      "nombre": "Disculpa",
+      "categoria": "cortesia"
+    },
+    {
+      "id": "yo",
+      "nombre": "Yo",
+      "categoria": "conversacion"
+    },
+    {
+      "id": "estudiante",
+      "nombre": "Estudiante",
+      "categoria": "conversacion"
+    },
+    {
+      "id": "problema",
+      "nombre": "Problema",
+      "categoria": "conversacion"
+    },
+    {
+      "id": "repetir",
+      "nombre": "Repetir",
+      "categoria": "conversacion"
+    },
+    {
+      "id": "no_entiendo",
+      "nombre": "No entiendo",
+      "categoria": "conversacion"
+    },
+    {
+      "id": "esperar",
+      "nombre": "Esperar",
+      "categoria": "conversacion"
+    },
+    {
+      "id": "reserva",
+      "nombre": "Reserva de matrícula",
+      "categoria": "tramites"
+    },
+    {
+      "id": "convalidacion",
+      "nombre": "Convalidación",
+      "categoria": "tramites"
+    },
+    {
+      "id": "justificacion",
+      "nombre": "Justificación de inasistencias",
+      "categoria": "tramites"
+    },
+    {
+      "id": "reclamo",
+      "nombre": "Quejas y reclamos",
+      "categoria": "tramites"
+    },
+    {
+      "id": "titulo",
+      "nombre": "Grado y título",
+      "categoria": "tramites"
+    },
+    {
+      "id": "revision",
+      "nombre": "Revisión de evaluaciones",
+      "categoria": "academico"
+    },
+    {
+      "id": "contrasena",
+      "nombre": "Contraseña",
+      "categoria": "cuentas"
+    },
+    {
+      "id": "wifi",
+      "nombre": "Wifi",
+      "categoria": "cuentas"
+    },
+    {
+      "id": "plataforma",
+      "nombre": "Plataforma del SAE",
+      "categoria": "cuentas"
     }
   ]
 }
